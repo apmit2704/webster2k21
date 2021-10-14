@@ -19,14 +19,14 @@ class GameRoom(WebsocketConsumer):
         
         self.accept()
 
-    #  disconnect from the paticular game on the server 
+    # disconnect from the paticular game on the server 
     def disconnect(self):
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
         )
 
-    #recieve data from frontend    
+    # receive data from frontend    
     def receive(self , text_data):
         print(text_data)
         async_to_sync(self.channel_layer.group_send)(
@@ -41,5 +41,5 @@ class GameRoom(WebsocketConsumer):
         data = event['payload']
         data = json.loads(data)
         self.send(text_data = json.dumps({
-            'payload' : data['room_code']
+            'payload' : data['data']
         }))        
