@@ -53,5 +53,5 @@ def loginPage(request):
 
 def homePage(request):
 	context={}
-	return render(request, 'accounts/home.html', context)
+	return render(request, 'profile.html', context)
 
