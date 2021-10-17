@@ -3,6 +3,7 @@
 const socket = new WebSocket('ws://localhost:8000/ws/game/' + room_code)
 socket.onopen = function(e){
     console.log("Socket Connected");
+    setInitialScope()
 }
 socket.onmessage = function(e){
     var data = JSON.parse(e.data)
@@ -76,6 +77,12 @@ function givePiecesEventListeners() {
         }
     }
 }
+ 
+function setInitialScope() {
+    if(player === 'game_opponent') {
+        removeAllEventListeners()
+    }
+}
 
 /*---------- Logic ----------*/
 
@@ -136,12 +143,7 @@ function setSelectedPieceForOpp(selectedPieceOpp, turnOpp, number){
     }
     else {
         console.log("SAME AS HOST")
-        for (let i = 0; i < redsPieces.length; i++) {
-            redsPieces[i].removeEventListener("click", getPlayerPieces);
-        }
-        for (let i = 0; i < blacksPieces.length; i++) {
-            blacksPieces[i].removeEventListener("click", getPlayerPieces);
-        }
+        removeAllEventListeners()
     }
 }
 
@@ -469,7 +471,8 @@ function changePlayer() {
 }
 
 function gameDraw() {
-    var Data = {
+    
+    var data = {
         'type' : 'endgame',
         'result' : 'D'
     }
@@ -477,6 +480,15 @@ function gameDraw() {
     socket.send(JSON.stringify({
         data
     }));
+}
+
+function removeAllEventListeners() {
+    for (let i = 0; i < redsPieces.length; i++) {
+        redsPieces[i].removeEventListener("click", getPlayerPieces);
+    }
+    for (let i = 0; i < blacksPieces.length; i++) {
+        blacksPieces[i].removeEventListener("click", getPlayerPieces);
+    }
 }
 
 givePiecesEventListeners();

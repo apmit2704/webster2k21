@@ -51,9 +51,15 @@ def play(request, room_code):
     print(game.game_opponent)
     print(game.game_creater)
     print(user.id)
+    if game.game_creater == user.id:
+        player = 'game_creator'
+    else:
+        player = 'game_opponent'
+    print(player)
     context = {
         'username' :user.username,
-        'room_code' : room_code
+        'room_code' : room_code,
+        'player' : player
     }
     return render(request, 'play.html', context)
 

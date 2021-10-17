@@ -100,11 +100,17 @@
         </table>
         <div class="desktop">
             <div class="red-turn-text">
-                Reds turn
+                Reds turn 
+                {% if player == "game_creator" %}
+                    (YOU)
+                {% endif %}
             </div>
             <p id="divider">|</p>
             <div class="black-turn-text">
                 Blacks turn
+                {% if player == "game_opponent" %}
+                    (YOU)
+                {% endif %}
             </div>
         </div>
         <div class="black-turn-text mobile">
@@ -116,6 +122,7 @@
     </main>
     <script>
         const room_code = '{{ room_code }}';
+        const player = '{{ player }}';
     </script>
 </body>
 </html>
