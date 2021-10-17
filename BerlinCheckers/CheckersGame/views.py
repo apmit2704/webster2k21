@@ -3,13 +3,15 @@ from django.shortcuts import render, redirect
 from .models import *
 from accounts.models import *
 from django.contrib.auth import logout
+import string
+import random
 # Create your views here.
 
 
 def create_game(request):
     user = User.objects.get(id = request.user.id)
     if user.is_authenticated:
-        room_code = "100"
+        room_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k = 5))
         game = Game(
             room_code = room_code,
             game_creater = user.id,
@@ -28,10 +30,12 @@ def logout_view(request):
 
 
 def play(request, room_code):
-    print(room_code)
+    if request.user is None:
+        return redirect('/')
     user = User.objects.get(id = request.user.id)
     game = Game.objects.get(room_code = room_code)
-    
+    if game is None:
+        return HttpResponse('Game does not exist')
     if game.game_creater != user.id:
         if game.game_opponent:
             print(game.game_creater)
@@ -54,24 +58,8 @@ def play(request, room_code):
     return render(request, 'play.html', context)
 
 def join_game(request):
+    if request.user is None:
+        return redirect('/')
     room_code = request.GET['room_code']
-    print(room_code)
     user = User.objects.get(id = request.user.id)
-    game = Game.objects.get(room_code = room_code)
-    if game.game_creater != user.id:
-        if game.game_opponent:
-            print(game.game_creater)
-            print(game.game_opponent)
-            print(user.id)
-            if game.game_opponent != user.id and game.game_creater != user.id:
-                return HttpResponse("Game_opponent already exists")
-        else:
-            game.game_opponent = user.id
-            game.save()
-    if game.is_over:
-        return HttpResponse("Game is over")
-    context = {
-        'username' :user.username,
-        'room_code' : room_code
-    }
-    return render(request, 'play.html', context)
+    return redirect('/play/' + room_code + '?username=' + user.username)

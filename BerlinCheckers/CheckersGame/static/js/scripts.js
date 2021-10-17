@@ -1,11 +1,12 @@
 /*----------- Socket Connection --------*/
-const room_code = "room_code"
-const socket = new WebSocket('ws://localhost:8000/ws/game/'+room_code)
+//console.log(room_code)
+const socket = new WebSocket('ws://localhost:8000/ws/game/' + room_code)
 socket.onopen = function(e){
     console.log("Socket Connected");
 }
 socket.onmessage = function(e){
     var data = JSON.parse(e.data)
+    console.log("message received")
     setSelectedPieceForOpp(data.payload.selectedPiece, data.payload.turn, data.payload.number);
 }
 socket.onclose = function(e){
@@ -131,7 +132,16 @@ function setSelectedPieceForOpp(selectedPieceOpp, turnOpp, number){
     if(turn === turnOpp){
         selectedPiece = selectedPieceOpp;
         turn = turnOpp;
-        makeMove(number);
+        setOpponentPiece(selectedPiece, number, turn)
+    }
+    else {
+        console.log("SAME AS HOST")
+        for (let i = 0; i < redsPieces.length; i++) {
+            redsPieces[i].removeEventListener("click", getPlayerPieces);
+        }
+        for (let i = 0; i < blacksPieces.length; i++) {
+            blacksPieces[i].removeEventListener("click", getPlayerPieces);
+        }
     }
 }
 
@@ -284,6 +294,7 @@ function makeMove(number) {
     console.log(turn);
 
     var data = {
+        'type': 'move',
         'selectedPiece' : selectedPiece,
         'turn' : turn,
         'number' : number
@@ -352,7 +363,7 @@ function setOpponentPiece(selectedPiece, number, turnOpp){
 
         let indexOfPiece = selectedPiece.indexOfBoardPiece
         if (number === 14 || number === -14 || number === 18 || number === -18) {
-            changeData1(indexOfPiece, indexOfPiece + number, indexOfPiece + number / 2);
+            changeData(indexOfPiece, indexOfPiece + number, indexOfPiece + number / 2);
         } else {
             changeData(indexOfPiece, indexOfPiece + number);
         }
@@ -401,6 +412,9 @@ function removeEventListeners() {
     checkForWin();
 }
 
+// When the player has played its chance
+
+
 // Checks for a win
 function checkForWin() {
     if (blackScore === 0) {
@@ -409,6 +423,13 @@ function checkForWin() {
             redTurnText[i].style.color = "black";
             blackTurntext[i].style.display = "none";
             redTurnText[i].textContent = "RED WINS!";
+            var data = {
+                'type': 'endgame',
+                'result': 'R'
+            }
+            socket.send(JSON.stringify({
+                data
+            }));
         }
     } else if (redScore === 0) {
         divider.style.display = "none";
@@ -416,9 +437,17 @@ function checkForWin() {
             blackTurntext[i].style.color = "black";
             redTurnText[i].style.display = "none";
             blackTurntext[i].textContent = "BLACK WINS!";
+            var data = {
+                'type' : 'endgame',
+                'result' : 'B'
+            }
+            socket.send(JSON.stringify({
+                data
+            }));
         }
+    } else {
+        changePlayer();
     }
-    changePlayer();
 }
 
 // Switches players turn
@@ -437,6 +466,17 @@ function changePlayer() {
         }
     }
     givePiecesEventListeners();
+}
+
+function gameDraw() {
+    var Data = {
+        'type' : 'endgame',
+        'result' : 'D'
+    }
+
+    socket.send(JSON.stringify({
+        data
+    }));
 }
 
 givePiecesEventListeners();
