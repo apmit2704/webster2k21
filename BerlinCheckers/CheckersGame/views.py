@@ -69,3 +69,9 @@ def join_game(request):
     room_code = request.GET['room_code']
     user = User.objects.get(id = request.user.id)
     return redirect('/play/' + room_code + '?username=' + user.username)
+
+def indexPage(request):
+    context = {
+
+    }
+    return render(request,'index.html',context)
