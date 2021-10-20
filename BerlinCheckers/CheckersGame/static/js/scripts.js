@@ -1,3 +1,10 @@
+// loading symbol before opponent joins showing the room code to be entered
+// prevent refresh, or leave the game on refresh
+// show option like download screen rec after game has ended
+// make room_code -> room_id
+// add proper alerts
+// make UI better
+
 /*----------- Socket Connection --------*/
 //console.log(room_code)
 const socket = new WebSocket('ws://localhost:8000/ws/game/' + room_code)
@@ -5,11 +12,13 @@ socket.onopen = function(e){
     console.log("Socket Connected");
     setInitialScope()
 }
+
 socket.onmessage = function(e){
     var data = JSON.parse(e.data)
     console.log("message received")
     setSelectedPieceForOpp(data.payload.selectedPiece, data.payload.turn, data.payload.number);
 }
+
 socket.onclose = function(e){
     console.log("Socket Disconnected");
 }
