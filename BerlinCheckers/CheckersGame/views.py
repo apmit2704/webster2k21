@@ -61,6 +61,7 @@ def play(request, room_code):
         'room_code' : room_code,
         'player' : player
     }
+    
     return render(request, 'play.html', context)
 
 def join_game(request):
