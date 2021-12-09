@@ -42,7 +42,7 @@ def play(request, room_code):
             print(game.game_opponent)
             print(user.id)
             if game.game_opponent != user.id and game.game_creater != user.id:
-                return HttpResponse("Game_opponent already exists")
+                return HttpResponse("Game is not open to you")
         else:
             game.game_opponent = user.id
             game.save()
@@ -61,6 +61,7 @@ def play(request, room_code):
         'room_code' : room_code,
         'player' : player
     }
+    
     return render(request, 'play.html', context)
 
 def join_game(request):

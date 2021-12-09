@@ -16,8 +16,19 @@ class GameRoom(WebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        
-        self.accept()
+        game = Game.objects.get(room_code = self.room_name)
+        if game:
+            if game.game_opponent:
+                text_data = '{"data":{"type":"load"}}'
+            else:
+                text_data = '{"data" : {"type" : "wait"}}'
+            async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,{
+                        'type' : 'run_game',
+                        'payload' : text_data
+                    }
+                )
+            self.accept()
 
     # disconnect from the paticular game on the server 
     def disconnect(self, close_code):
@@ -38,6 +49,7 @@ class GameRoom(WebsocketConsumer):
 
     # receive data from frontend    
     def receive(self , text_data):
+        print(text_data)
         data_received = json.loads(text_data)
         if data_received['data']['type'] == 'move':
             async_to_sync(self.channel_layer.group_send)(
@@ -59,8 +71,14 @@ class GameRoom(WebsocketConsumer):
                     game.won = 'D'
                 game.is_over = True
                 game.save()
+                async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,{
+                    'type' : 'run_game',
+                    'payload' : text_data
+                }
+            )
             self.close()
-            
+
     # sends data back to frontend
     def run_game(self , event):
         data = event['payload']
