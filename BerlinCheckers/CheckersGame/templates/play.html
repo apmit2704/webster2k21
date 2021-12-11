@@ -130,13 +130,21 @@
             </button>
         </div>
     </main>
-   
+    {% if turn %}
+    <script>
+        let turn = true;
+    </script>
+    {% else %}
+    <script>
+        let turn = false;
+    </script>
+    {% endif %}
+
     <script>
         const room_code = '{{ room_code }}';
         const player = '{{ player }}';
-        const turn = {{ game.turn }};
-        const redScore = {{ game.red_score }};
-        const blackScore = {{ game.black_score }};
+        let redScore = {{ redScore|safe }};
+        let blackScore = {{ blackScore|safe }};
         const game_squares = {{ game_squares|safe }};
     </script>
     <video  width="320" height="240" autoplay />

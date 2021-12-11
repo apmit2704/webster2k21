@@ -17,10 +17,7 @@ class Game(models.Model):
         ('T', 'Terminated')
     ]
     won = models.CharField(max_length = 1, choices = PLAYER_CHOICES, blank=True, null=True)
-    turn = models.IntegerField(default = 0, validators=[
-        MaxValueValidator(1),
-        MinValueValidator(0)
-    ])
+    turn = models.BooleanField(default = True)
     red_score = models.IntegerField(default = 12, validators=[
         MaxValueValidator(12),
         MinValueValidator(0)

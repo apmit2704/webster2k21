@@ -20,7 +20,7 @@ def create_game(request):
             game_creater = user.id,
             game_opponent = None,
             is_over = False,
-            turn = 0,
+            turn = True,
             red_score = 12,
             black_score = 12
         )
@@ -31,9 +31,13 @@ def create_game(request):
                 square_value = None,
                 game = game
             )
-            if i%2 == 1 and i < 24:
+            if i%2 == 1 and (math.floor(i/8) == 0 or math.floor(i/8) == 2):
                 sq.square_value = math.floor(i/2)
-            elif i%2 == 0 and i > 38:
+            elif i%2 == 0 and math.floor(i/8) == 1:
+                sq.square_value = math.floor(i/2)
+            elif i%2 == 0 and (math.floor(i/8) == 5 or math.floor(i/8) == 7):
+                sq.square_value = math.floor((i-16)/2)
+            elif i%2 == 1 and math.floor(i/8) == 6:
                 sq.square_value = math.floor((i-16)/2)
             sq.save()
         
@@ -74,17 +78,19 @@ def play(request, room_code):
     else:
         player = 'game_opponent'
     print(player)
-    game_squares = BoardSquare.objects.filter(game = game).order_by('-square_no')
+    game_squares = BoardSquare.objects.filter(game = game).order_by('square_no')
     #print(game_squares)
     square_list = []
     for i in game_squares:
         square_list.append(i.square_value)
-    #print(square_list)
+    print(square_list)
     context = {
         'username' :user.username,
         'room_code' : room_code,
         'player' : player,
-        'game' : game,
+        'turn' : game.turn,
+        'redScore' : game.red_score,
+        'blackScore' : game.black_score,
         'game_squares' : json.dumps(square_list)
     }
     

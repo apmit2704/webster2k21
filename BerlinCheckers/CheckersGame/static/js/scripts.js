@@ -36,23 +36,19 @@ socket.onclose = function(e){
 }
 /*----------- Game State Data ----------*/
 
-const board = [
-    null, 0, null, 1, null, 2, null, 3,
-    4, null, 5, null, 6, null, 7, null,
-    null, 8, null, 9, null, 10, null, 11,
-    null, null, null, null, null, null, null, null,
-    null, null, null, null, null, null, null, null,
-    12, null, 13, null, 14, null, 15, null,
-    null, 16, null, 17, null, 18, null, 19,
-    20, null, 21, null, 22, null, 23, null
-]
+// const board = [
+//     null, 0, null, 1, null, 2, null, 3,
+//     4, null, 5, null, 6, null, 7, null,
+//     null, 8, null, 9, null, 10, null, 11,
+//     null, null, null, null, null, null, null, null,
+//     null, null, null, null, null, null, null, null,
+//     12, null, 13, null, 14, null, 15, null,
+//     null, 16, null, 17, null, 18, null, 19,
+//     20, null, 21, null, 22, null, 23, null
+// ]
 
-// const board = []
-// for(i=0;i<64;i++)
-// {
-//     board[i] = game_squares[i]
-// }
-// console.log(board);
+const board = game_squares
+console.log(board);
 
 /*---------- Cached Variables ----------*/
 
@@ -70,13 +66,12 @@ const redTurnText = document.querySelectorAll(".red-turn-text");
 const blackTurntext = document.querySelectorAll(".black-turn-text");
 const divider = document.querySelector("#divider")
 
-// player properties
+///player properties
 // let turn = game.turn;
 // let redScore = game.red_score;
 // let blackScore = game.black_score;
 let playerPieces;
 
-console.log(turn === 0);
 
 // selected piece properties
 let selectedPiece = {
@@ -161,6 +156,7 @@ function resetSelectedPieceProperties() {
 function getSelectedPiece() {
     selectedPiece.pieceId = parseInt(event.target.id);
     selectedPiece.indexOfBoardPiece = findPiece(selectedPiece.pieceId);
+    console.log(selectedPiece);
     isPieceKing();
 }
 
@@ -480,7 +476,7 @@ function checkForWin() {
         var data = {
             'type' : 'state',
             'board' : board,
-            'turn' : 1-turn,
+            'turn' : !turn,
             'redScore' : redScore,
             'blackScore' : blackScore
         }
