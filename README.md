@@ -12,5 +12,6 @@
  - Video call while playing (only for registered users). 
  - Sound effects 
  - Rating System  
- - Screen recording (saved for user to watch later) • Dark mode. 
+ - Screen recording (saved for user to watch later) 
+ - Dark mode. 
  - Site tour.
