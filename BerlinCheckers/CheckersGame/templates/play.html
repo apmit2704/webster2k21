@@ -129,13 +129,25 @@
                 Stop Recording
             </button>
         </div>
+        <br>
+       
+        
+            Enter Chat and press enter
+            <div><input id=input placeholder="message" /></div>
+            
+            Chat Output
+            <div id=box></div>
+        
     </main>
-   
+
+    <script src=https://cdn.pubnub.com/sdk/javascript/pubnub.4.28.2.min.js></script>
+
     <script>
         const room_code = '{{ room_code }}';
-        const player = '{{ player }}';
+        const player = '{{ game_creator }}';
     </script>
     <video  width="320" height="240" autoplay />
+
  <script>
       const start = document.getElementById("start");
 const stop = document.getElementById("stop");
@@ -172,8 +184,42 @@ stop.addEventListener("click", () => {
   recorder.stop();
   stream.getVideoTracks()[0].stop();
 });  
-    </script>
 
+
+
+
+
+(function() {
+    var pubnub = new PubNub({
+        publishKey: 'pub-c-41c5ef93-a994-4e54-9307-c866bdb8e3a5',
+        subscribeKey: 'sub-c-32489648-5a95-11ec-96e9-32997ff5e1b9'
+    });
+    function $(id) {
+        return document.getElementById(id);
+    }
+    var box = $('box'),
+        input = $('input'),
+        channel = '10chat-demo';
+    pubnub.addListener({
+        message: function(obj) {
+            box.innerHTML = ('' + obj.message).replace(/[<>]/g, '') + '<br>' + box.innerHTML
+        }
+    });
+    pubnub.subscribe({
+        channels: [channel]
+    });
+    input.addEventListener('keyup', function(e) {
+        if ((e.keyCode || e.charCode) === 13) {
+            pubnub.publish({
+                channel: channel,
+                message: input.value,
+                x: (input.value = '')
+            });
+        }
+    });
+})();
+
+</script>
 
 </body>
 </html>
