@@ -8,7 +8,9 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css' %}"/>
     <script defer src="{% static 'js/scripts.js' %}"></script>
+    <script src="{% static 'js/vs.js' %}"></script>
     <title>Checkers</title>
 </head>
 <body>
@@ -16,6 +18,32 @@
         Waiting for opponent...<br>
         Room Code : {{ room_code }}<br>
     </div>
+     <div>
+            {% if player == "game_creator" %}
+            <input placeholder="Enter username..."
+                    type="text"
+                    id="username-input" /><br>
+            <button onclick="sendUsername()">Send</button>
+            <button onclick="startCall()">Start Call</button>
+           {% endif %}
+             
+        </div>
+        <div>
+            {% if player == "game_opponent" %}
+            <input placeholder="Enter username..."
+                    type="text"
+                    id="username-input1" /><br>
+            <button onclick="joinCall()">Join Call</button>
+            {% endif %}
+        </div>
+        <div id="video-call-div">
+            <video muted id="local-video" autoplay></video>
+            <video id="remote-video" autoplay></video>
+            <div class="call-action-div">
+                <button onclick="muteVideo()">Mute Video</button>
+                <button onclick="muteAudio()">Mute Audio</button>
+            </div>
+        </div>
     <main id='main' style="visibility: visible;">
         <div class="red-turn-text mobile">
             Reds turn
