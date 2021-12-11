@@ -1,4 +1,4 @@
-// loading symbol before opponent joins showing the room code to be entered
+// done --> loading symbol before opponent joins showing the room code to be entered
 // prevent refresh, or leave the game on refresh
 // show option like download screen rec after game has ended
 // make room_code -> room_id
@@ -10,7 +10,6 @@
 const socket = new WebSocket('ws://localhost:8000/ws/game/' + room_code)
 socket.onopen = function(e){
     console.log("Socket Connected");
-    
 }
 
 socket.onmessage = function(e){
@@ -48,6 +47,13 @@ const board = [
     20, null, 21, null, 22, null, 23, null
 ]
 
+// const board = []
+// for(i=0;i<64;i++)
+// {
+//     board[i] = game_squares[i]
+// }
+// console.log(board);
+
 /*---------- Cached Variables ----------*/
 
 // parses pieceId's and returns the index of that piece's place on the board
@@ -65,10 +71,12 @@ const blackTurntext = document.querySelectorAll(".black-turn-text");
 const divider = document.querySelector("#divider")
 
 // player properties
-let turn = true;
-let redScore = 12;
-let blackScore = 12;
+// let turn = game.turn;
+// let redScore = game.red_score;
+// let blackScore = game.black_score;
 let playerPieces;
+
+console.log(turn === 0);
 
 // selected piece properties
 let selectedPiece = {
@@ -137,7 +145,6 @@ function resetBorders() {
 
 // resets selected piece properties
 function resetSelectedPieceProperties() {
-    selectedPiece.pieceId = -1;
     selectedPiece.pieceId = -1;
     selectedPiece.isKing = false;
     selectedPiece.seventhSpace = false;
@@ -470,6 +477,16 @@ function checkForWin() {
             }));
         }
     } else {
+        var data = {
+            'type' : 'state',
+            'board' : board,
+            'turn' : 1-turn,
+            'redScore' : redScore,
+            'blackScore' : blackScore
+        }
+        socket.send(JSON.stringify({
+            data
+        }));
         changePlayer();
     }
 }
