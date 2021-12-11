@@ -13,7 +13,8 @@
 </head>
 <body>
     <div id='loadingMenu' style="visibility: hidden;">
-        Waiting for opponent...
+        Waiting for opponent...<br>
+        Room Code : {{ room_code }}<br>
     </div>
     <main id='main' style="visibility: visible;">
         <div class="red-turn-text mobile">
@@ -121,12 +122,12 @@
         </div>
         <div class="options">
             <button onclick="gameDraw()">End game</button>
-             <button id="start">
-      Start Recording
-    </button>
-    <button id="stop" disabled>
-      Stop Recording
-    </button>
+            <button id="start">
+                Start Recording
+            </button>
+            <button id="stop" disabled>
+                Stop Recording
+            </button>
         </div>
     </main>
    
