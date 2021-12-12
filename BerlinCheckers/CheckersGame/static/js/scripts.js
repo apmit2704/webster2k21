@@ -1,4 +1,4 @@
-// loading symbol before opponent joins showing the room code to be entered
+// done --> loading symbol before opponent joins showing the room code to be entered
 // prevent refresh, or leave the game on refresh
 // show option like download screen rec after game has ended
 // make room_code -> room_id
@@ -10,7 +10,6 @@
 const socket = new WebSocket('ws://localhost:8000/ws/game/' + room_code)
 socket.onopen = function(e){
     console.log("Socket Connected");
-    
 }
 
 socket.onmessage = function(e){
@@ -37,16 +36,19 @@ socket.onclose = function(e){
 }
 /*----------- Game State Data ----------*/
 
-const board = [
-    null, 0, null, 1, null, 2, null, 3,
-    4, null, 5, null, 6, null, 7, null,
-    null, 8, null, 9, null, 10, null, 11,
-    null, null, null, null, null, null, null, null,
-    null, null, null, null, null, null, null, null,
-    12, null, 13, null, 14, null, 15, null,
-    null, 16, null, 17, null, 18, null, 19,
-    20, null, 21, null, 22, null, 23, null
-]
+// const board = [
+//     null, 0, null, 1, null, 2, null, 3,
+//     4, null, 5, null, 6, null, 7, null,
+//     null, 8, null, 9, null, 10, null, 11,
+//     null, null, null, null, null, null, null, null,
+//     null, null, null, null, null, null, null, null,
+//     12, null, 13, null, 14, null, 15, null,
+//     null, 16, null, 17, null, 18, null, 19,
+//     20, null, 21, null, 22, null, 23, null
+// ]
+
+const board = game_squares
+console.log(board);
 
 /*---------- Cached Variables ----------*/
 
@@ -64,11 +66,12 @@ const redTurnText = document.querySelectorAll(".red-turn-text");
 const blackTurntext = document.querySelectorAll(".black-turn-text");
 const divider = document.querySelector("#divider")
 
-// player properties
-let turn = true;
-let redScore = 12;
-let blackScore = 12;
+///player properties
+// let turn = game.turn;
+// let redScore = game.red_score;
+// let blackScore = game.black_score;
 let playerPieces;
+
 
 // selected piece properties
 let selectedPiece = {
@@ -138,7 +141,6 @@ function resetBorders() {
 // resets selected piece properties
 function resetSelectedPieceProperties() {
     selectedPiece.pieceId = -1;
-    selectedPiece.pieceId = -1;
     selectedPiece.isKing = false;
     selectedPiece.seventhSpace = false;
     selectedPiece.ninthSpace = false;
@@ -154,6 +156,7 @@ function resetSelectedPieceProperties() {
 function getSelectedPiece() {
     selectedPiece.pieceId = parseInt(event.target.id);
     selectedPiece.indexOfBoardPiece = findPiece(selectedPiece.pieceId);
+    console.log(selectedPiece);
     isPieceKing();
 }
 
@@ -470,6 +473,16 @@ function checkForWin() {
             }));
         }
     } else {
+        var data = {
+            'type' : 'state',
+            'board' : board,
+            'turn' : !turn,
+            'redScore' : redScore,
+            'blackScore' : blackScore
+        }
+        socket.send(JSON.stringify({
+            data
+        }));
         changePlayer();
     }
 }

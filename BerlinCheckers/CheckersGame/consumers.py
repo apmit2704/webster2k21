@@ -78,6 +78,19 @@ class GameRoom(WebsocketConsumer):
                 }
             )
             self.close()
+        elif data_received['data']['type'] == 'state':
+            gameRoomId = self.room_group_name[5:]
+            print(gameRoomId)
+            game = Game.objects.get(room_code = gameRoomId)
+            game.turn = data_received['data']['turn'] 
+            game.red_score = data_received['data']['redScore']
+            game.black_score = data_received['data']['blackScore']
+            gameSquares = BoardSquare.objects.filter(id = game.id)
+            for square in gameSquares:
+                square.square_value = data_received['data']['board'][square.square_no]
+                square.save()
+            game.save()
+            #save board, turn, redscore, blackscore
 
     # sends data back to frontend
     def run_game(self , event):
