@@ -1,5 +1,5 @@
 // done --> loading symbol before opponent joins showing the room code to be entered
-// prevent refresh, or leave the game on refresh
+// done --> prevent refresh, or leave the game on refresh
 // show option like download screen rec after game has ended
 // make room_code -> room_id
 // add proper alerts

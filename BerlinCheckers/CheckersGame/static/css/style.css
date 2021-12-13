@@ -4,6 +4,7 @@
 
 body {
     height: 70vh;
+    background-color: #3B1F2B;
 }
 
 main {
@@ -11,12 +12,18 @@ main {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    
+    padding: 2%;
 }
 
-div {
+/* div {
     display: flex;
     justify-content: space-between;
+} */
+
+.wrapper div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 .mobile {
@@ -29,27 +36,27 @@ div {
 }
 
 .noPieceHere {
-    background-color: #F0D2B4;
+    background-color: #5F758E;
 }
 
 td {
     text-align: center;
-    background-color: #BA7A3A;
-    width: 65px;
-    height: 65px;
+    background-color: #383961;
+    width: 50px;
+    height: 50px;
 }
 
 .red-turn-text {
     text-align: center;
     color: black;
     font-family: "open sans";
-    font-size: 55px;
+    font-size: 5vh;
 }
 
 .black-turn-text {
     text-align: center;
     font-family: "open sans";
-    font-size: 55px;
+    font-size: 5vh;
     color: lightgray;
 }
 
@@ -58,7 +65,7 @@ td {
     height: 20px;
     padding: 12px;
     background-color: black;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     border-radius: 50px;
 }
 
@@ -67,7 +74,7 @@ td {
     height: 20px;
     padding: 12px;
     background-color: red;
-    border: 1px solid white;
+    /* border: 1px solid white; */
     border-radius: 50px;
 }
 
@@ -84,9 +91,9 @@ p {
 }
 
 #divider {
-    font-size: 90px;
-    margin-left: 15px;
-    margin-right: 15px;
+    font-size: 7vh;
+    margin-left: 3vw;
+    margin-right: 3vw;
 }
 
 span {
