@@ -71,8 +71,8 @@ def play(request, room_code):
         else:
             game.game_opponent = user.id
             game.save()
-    if game.is_over:
-        return HttpResponse("Game is over")
+    # if game.is_over:
+    #     return HttpResponse("Game is over")
     print(game.game_opponent)
     print(game.game_creater)
     print(user.id)
@@ -111,3 +111,10 @@ def indexPage(request):
 
     }
     return render(request,'index.html',context)
+
+
+def ProfilePage(request):
+    if request.user.is_authenticated:
+        return render(request,'createprofile.html')
+    else:
+        return redirect('/login/')

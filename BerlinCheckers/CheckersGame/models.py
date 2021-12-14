@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.db.models.deletion import CASCADE
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -34,7 +35,6 @@ class BoardSquare(models.Model):
         MaxValueValidator(64)
     ])
     game = models.ForeignKey(Game, on_delete=CASCADE)
-
 
 
 admin.site.register(Game)
