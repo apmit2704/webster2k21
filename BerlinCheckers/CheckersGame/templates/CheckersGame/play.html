@@ -14,36 +14,27 @@
     <title>Checkers</title>
 </head>
 <body>
-    <main id='main' style="visibility: visible;">
-        <div id='loadingMenu' style="visibility: hidden;">
-            Waiting for opponent...<br>
-            Room Code : {{ room_code }}<br>
+    <div id='loadingMenu' style="visibility: hidden;">
+        Waiting for opponent...<br>
+        Room Code : {{ room_code }}<br>
+    </div>
+     <div>
+            {% if player == "game_creator" %}
+            <input placeholder="Enter username..."
+                    type="text"
+                    id="username-input" /><br>
+            <button onclick="sendUsername()">Send</button>
+            <button onclick="startCall()">Start Call</button>
+           {% endif %}
+             
         </div>
-        <div class="options">
-            <button onclick="gameDraw()">End game</button>
-            <button id="start">
-                Start Recording
-            </button>
-            <button id="stop" disabled>
-                Stop Recording
-            </button>
-            <div>
-                {% if player == "game_creator" %}
-                <!-- <input placeholder="Enter username..."
-                        type="text"
-                        id="username-input" /><br>
-                <button onclick="sendUsername()">Send</button> -->
-                <button onclick="startCall()">Start Call</button>
-                {% endif %}  
-            </div>
-            <div>
-                {% if player == "game_opponent" %}
-                <!-- <input placeholder="Enter username..."
-                        type="text"
-                        id="username-input1" /><br> -->
-                <button onclick="joinCall()">Join Call</button>
-                {% endif %}
-            </div>
+        <div>
+            {% if player == "game_opponent" %}
+            <input placeholder="Enter username..."
+                    type="text"
+                    id="username-input1" /><br>
+            <button onclick="joinCall()">Join Call</button>
+            {% endif %}
         </div>
         <div id="video-call-div">
             <video muted id="local-video" autoplay></video>
@@ -53,120 +44,128 @@
                 <button onclick="muteAudio()">Mute Audio</button>
             </div>
         </div>
-        <div class="wrapper" style="display: flex; flex-direction: row;">
-            <div class="gameBoard">
-                <!-- <div class="red-turn-text mobile">
-                    Reds turn
-                </div> -->
-                <table>
-                    <tr>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="0"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="1"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="2"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="3"></p></td>
-                    </tr>
-                    <tr>
-                        <td><p class="red-piece" id="4"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="5"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="6"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="7"></p></td>
-                        <td class="noPieceHere"></td>
-                    </tr>
-                    <tr>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="8"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="9"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="10"></p></td>
-                        <td class="noPieceHere"></td>
-                        <td><p class="red-piece" id="11"></p></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="noPieceHere"></td>
-                        <td></td>
-                        <td class="noPieceHere"></td>
-                        <td></td>
-                        <td class="noPieceHere"></td>
-                        <td></td>
-                        <td class="noPieceHere"></td>
-                    </tr>
-                    <tr>
-                        <td class="noPieceHere"></td>
-                        <td></td>
-                        <td class="noPieceHere"></td>
-                        <td></td>
-                        <td class="noPieceHere"></td>
-                        <td></td>
-                        <td class="noPieceHere"></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><span class="black-piece" id="12"></span></td>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="13"></span></td>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="14"></span></td>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="15"></span></td>
-                        <td class="noPieceHere"></td>
-                    </tr>
-                    <tr>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="16"></span></td>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="17"></span></td>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="18"></span></td>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="19"></span></td>
-                    </tr>
-                    <tr>
-                        <td><span class="black-piece" id="20"></span></td>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="21"></span></td>
-                        <td class="noPieceHere">
-                        <td><span class="black-piece" id="22"></span></td>
-                        <td class="noPieceHere"></td>
-                        <td><span class="black-piece" id="23"></span></td>
-                        <td class="noPieceHere"></td>
-                    </tr>
-                </table>
-                <div class="desktop">
-                    <div class="red-turn-text">
-                        Reds turn 
-                        {% if player == "game_creator" %}
-                            (YOU)
-                        {% endif %}
-                    </div>
-                    <p id="divider">|</p>
-                    <div class="black-turn-text">
-                        Blacks turn
-                        {% if player == "game_opponent" %}
-                            (YOU)
-                        {% endif %}
-                    </div>
-                </div>
-                <!-- <div class="black-turn-text mobile">
-                    Blacks turn
-                </div>  -->
-            </div>
-            
-            <div class="chatbox">
-                Enter Chat and press enter
-                <div><input id=input placeholder="message" /></div>
-                Chat Output
-                <div id=box></div>
-            </div> 
+    <main id='main' style="visibility: visible;">
+        <div class="red-turn-text mobile">
+            Reds turn
         </div>
+        <table>
+            <tr>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="0"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="1"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="2"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="3"></p></td>
+            </tr>
+            <tr>
+                <td><p class="red-piece" id="4"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="5"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="6"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="7"></p></td>
+                <td class="noPieceHere"></td>
+            </tr>
+            <tr>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="8"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="9"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="10"></p></td>
+                <td class="noPieceHere"></td>
+                <td><p class="red-piece" id="11"></p></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="noPieceHere"></td>
+                <td></td>
+                <td class="noPieceHere"></td>
+                <td></td>
+                <td class="noPieceHere"></td>
+                <td></td>
+                <td class="noPieceHere"></td>
+            </tr>
+            <tr>
+                <td class="noPieceHere"></td>
+                <td></td>
+                <td class="noPieceHere"></td>
+                <td></td>
+                <td class="noPieceHere"></td>
+                <td></td>
+                <td class="noPieceHere"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><span class="black-piece" id="12"></span></td>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="13"></span></td>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="14"></span></td>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="15"></span></td>
+                <td class="noPieceHere"></td>
+            </tr>
+            <tr>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="16"></span></td>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="17"></span></td>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="18"></span></td>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="19"></span></td>
+            </tr>
+            <tr>
+                <td><span class="black-piece" id="20"></span></td>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="21"></span></td>
+                <td class="noPieceHere">
+                <td><span class="black-piece" id="22"></span></td>
+                <td class="noPieceHere"></td>
+                <td><span class="black-piece" id="23"></span></td>
+                <td class="noPieceHere"></td>
+            </tr>
+        </table>
+        <div class="desktop">
+            <div class="red-turn-text">
+                Reds turn 
+                {% if player == "game_creator" %}
+                    (YOU)
+                {% endif %}
+            </div>
+            <p id="divider">|</p>
+            <div class="black-turn-text">
+                Blacks turn
+                {% if player == "game_opponent" %}
+                    (YOU)
+                {% endif %}
+            </div>
+        </div>
+        <div class="black-turn-text mobile">
+            Blacks turn
+        </div>
+        <div class="options">
+            <button onclick="gameDraw()">End game</button>
+            <button id="start">
+                Start Recording
+            </button>
+            <button id="stop" disabled>
+                Stop Recording
+            </button>
+        </div>
+        <br>
+       
+        
+            Enter Chat and press enter
+            <div><input id=input placeholder="message" /></div>
+            
+            Chat Output
+            <div id=box></div>
+        
     </main>
     {% if turn %}
     <script>
@@ -177,6 +176,7 @@
         let turn = false;
     </script>
     {% endif %}
+
     <script>
         const room_code = '{{ room_code }}';
         const player = '{{ player }}';
