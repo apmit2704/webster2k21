@@ -224,11 +224,11 @@
         const game_squares = {{ game_squares|safe }};
     </script>
     <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.28.2.min.js"></script>
-    <video  width="320" height="240" autoplay />
+    <video  id="screen-video" width="320" height="240" autoplay />
     <script>
       const start = document.getElementById("start");
 const stop = document.getElementById("stop");
-const video = document.querySelector("video");
+const video = document.getElementById("screen-video");
 let recorder, stream;
 
 async function startRecording() {
