@@ -99,7 +99,7 @@ function startCall() {
 
 function joinCall() {
 
-    username = {{ room_code }}
+    username = document.getElementById("username-input1").value
 
     document.getElementById("video-call-div")
     .style.display = "inline"
