@@ -28,6 +28,7 @@ socket.onmessage = function(e){
         setInitialScope()
     } else if(data.payload.type === 'endgame'){
         removeAllEventListeners();
+        alert("Game has ended.");
     } else {
         setSelectedPieceForOpp(data.payload.selectedPiece, data.payload.turn, data.payload.number);
     }
