@@ -21,7 +21,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('game/', TemplateView.as_view(template_name='index.html')),
-    path('', include('CheckersGame.urls')),
-    path('', include('accounts.urls')),
+    path('', include('CheckersGame.urls'), name = "CheckersGame"),
+    path('', include('accounts.urls'), name = "accounts"),
 ]
 urlpatterns += staticfiles_urlpatterns()

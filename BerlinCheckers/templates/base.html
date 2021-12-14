@@ -54,17 +54,21 @@
 <!doctype html>
 <html lang="en">
   <head>
-  	<title>Checkers</title>
+  	
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% block head %}
+    {% endblock %}
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 		
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% block css %} 
-    {% endblock %}
+
+    <title>{% block title %}{% endblock %}</title>
+
   </head>
   <body>
 		
@@ -100,14 +104,14 @@
 	          </li>
 	        </ul>
 
-	        <div class="mb-5">
+	        <div class="mb-1">
 			
             {% if not user.is_authenticated %}
-            <ul>
-            <li><button type="button" class="btn btn-outline-dark btn-lg">Sign Up</button></li>
-            <br>
-            <li><button type="button" class="btn btn-outline-success btn-lg">Log In</button></li>
-            <ul>
+            
+            <a href="{% url 'register'%}"><button type="button" class="btn btn-outline-dark btn-lg mt-2">Sign Up</button>
+            
+            <a href="{% url 'login'%}"><button type="button" class="btn btn-outline-success btn-lg mt-2">Log In</button></a>
+            
             {% endif %}       
 					</div>
 
