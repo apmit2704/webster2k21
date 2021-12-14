@@ -96,8 +96,7 @@ def play(request, room_code):
         'blackScore' : game.black_score,
         'game_squares' : json.dumps(square_list)
     }
-    
-    return render(request, 'play.html', context)
+    return render(request, 'CheckersGame/play.html', context)
 
 def join_game(request):
     if request.user is None:
@@ -110,11 +109,11 @@ def indexPage(request):
     context = {
 
     }
-    return render(request,'index.html',context)
+    return render(request,'CheckersGame/index.html',context)
 
 
 def ProfilePage(request):
     if request.user.is_authenticated:
-        return render(request,'createprofile.html')
+        return render(request,'CheckersGame/createprofile.html')
     else:
         return redirect('/login/')
