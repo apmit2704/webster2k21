@@ -17,6 +17,20 @@
          <p>{{ request.user.email }}</p>
          <h5>FRIENDS</h5>
     </div>
+    <div>
+        <h3>1. Use room_code to invite opponent</h3>
+        <form action='/creategame' method='get'>
+            <button type='Submit'>Create Game</button>
+        </form>
+        <form action='/play/' method='GET'>
+            <input name="room_code" type="text" placeholder="Enter Room Code">
+            <button type='Submit'>Join Game</button>
+        </form>
+        <h3>2. Play with bot</h3>
+        <form action='/logout/' method='GET'>
+            <button type='Submit'>Logout</button>
+        </form>
+    </div>
     <div class="right">
         <div class="info">
             <h3>PROFILE</h3>
