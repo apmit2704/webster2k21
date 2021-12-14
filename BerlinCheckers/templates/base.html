@@ -1,0 +1,131 @@
+{% load static %}
+{% comment %} <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+  <title id="title">Checkers</title>
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.jss" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" ></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  {% block css %} 
+  {% endblock %}
+	
+</head>
+  <body>
+   
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-2" style="padding: 0;">
+                <div class="wrapper d-flex">
+                <div class="sidebar"> <small class="text-muted pl-3">Checkers</small>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
+                        <li><a href="#"><i class="far fa-credit-card"></i>Play </a></li>
+                        <li><a href="#"><i class="fas fa-file-invoice"></i>Profile </a></li>
+                        <li><a href="#"><i class="far fa-calendar-alt"></i>Learn</a></li>
+                        <li><a href="#"><i class="fas fa-video"></i>Connect</a></li>
+                        <li><a href="#"><i class="fas fa-id-badge"></i>Settings</a></li>
+                    </ul> 
+                    {% if not user.is_authenticated %}
+                    <ul>
+                    <li><button type="button" class="btn btn-outline-dark btn-lg">Sign Up</button></li>
+                    <li><button type="button" class="btn btn-outline-success btn-lg">Log In</button></li>
+                    <ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-10">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+ 
+  
+  </body>
+</html> {% endcomment %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+  	<title>Checkers</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block css %} 
+    {% endblock %}
+  </head>
+  <body>
+		
+		<div class="wrapper d-flex align-items-stretch">
+			<nav id="sidebar">
+				<div class="custom-menu">
+					<button type="button" id="sidebarCollapse" class="btn btn-primary">
+	          <i class="fa fa-bars"></i>
+	          <span class="sr-only">Toggle Menu</span>
+	        </button>
+        </div>
+				<div class="p-4">
+		  		<h1><a href="index.html" class="logo">Checkers <span>Play Checkers</span></a></h1>
+	        <ul class="list-unstyled components mb-5">
+	          <li class="active">
+	            <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
+	          </li>
+	          <li>
+	              <a href="#"><span class="fa fa-user mr-3"></span> How To Play</a>
+	          </li>
+	          <li>
+              <a href="#"><span class="fa fa-briefcase mr-3"></span> Play</a>
+	          </li>
+	          <li>
+              <a href="#"><span class="fa fa-sticky-note mr-3"></span> Connect</a>
+	          </li>
+	          
+	          <li>
+              <a href="#"><span class="fa fa-cogs mr-3"></span> Settings</a>
+	          </li>
+	          <li>
+              <a href="#"><span class="fa fa-paper-plane mr-3"></span> Profile</a>
+	          </li>
+	        </ul>
+
+	        <div class="mb-5">
+			
+            {% if not user.is_authenticated %}
+            <ul>
+            <li><button type="button" class="btn btn-outline-dark btn-lg">Sign Up</button></li>
+            <br>
+            <li><button type="button" class="btn btn-outline-success btn-lg">Log In</button></li>
+            <ul>
+            {% endif %}       
+					</div>
+
+	     
+
+	      </div>
+    	</nav>
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5 pt-5">
+        {% block content %}
+        {% endblock %}
+      </div>
+		</div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

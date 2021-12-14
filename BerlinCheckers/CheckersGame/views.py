@@ -8,8 +8,11 @@ import random
 import math, json
 # Create your views here.
 
+def base(request):
+    return render(request, 'base.html')
+
 def home(request):
-    return render(request, 'profile.html')
+    return render(request, 'home.html')
     
 def create_game(request):
     user = User.objects.get(id = request.user.id)
@@ -43,7 +46,7 @@ def create_game(request):
         
         return redirect('/play/'+room_code+"?username="+user.username)
     else:
-        return redirect('/login/')
+        return redirect('accounts/login/')
 
 def logout_view(request):
     if request.user.is_authenticated:
