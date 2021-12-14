@@ -4,9 +4,7 @@ import json
 from .models import *
 
 
-
 class GameRoom(WebsocketConsumer):
-    
     # connect to a paticular game on the server
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_code']
