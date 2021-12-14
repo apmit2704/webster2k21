@@ -108,3 +108,10 @@ def indexPage(request):
 
     }
     return render(request,'index.html',context)
+
+
+def ProfilePage(request):
+    if request.user.is_authenticated:
+        return render(request,'createprofile.html')
+    else:
+        return redirect('/login/')

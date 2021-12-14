@@ -10,4 +10,5 @@ urlpatterns = [
     path('creategame/', create_game),
     path('logout/', logout_view),
     path('index/',views.indexPage,name="index"),
+    path('profile/',views.ProfilePage,name="profile"),
 ]
