@@ -18,10 +18,12 @@ socket.onmessage = function(e){
     if(data.payload.type === 'wait') {
         console.log("wait")
         document.getElementById('main').style.visibility = 'hidden';
+        document.getElementById('options').style.visibility = 'hidden';
         document.getElementById('loadingMenu').style.visibility = 'visible';
     } else if(data.payload.type === 'load') {
         console.log("load")
         document.getElementById('loadingMenu').style.visibility = 'hidden';
+        document.getElementById('options').style.visibility = 'visible';
         document.getElementById('main').style.visibility = 'visible';
         setInitialScope()
     } else if(data.payload.type === 'endgame'){
