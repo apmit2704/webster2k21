@@ -20,14 +20,14 @@
         Waiting for opponent...<br>
         Room Code : {{ room_code }}<br>
     </div>
-    <div class="options">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div id="options" class="options" style="visibility: hidden;">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav" style="display: flex; justify-content: space-evenly;">
+                <ul class="navbar-nav">
                   <li class="nav-item">
                     <button class="btn btn-secondary" onclick="gameDraw()">End game</button>
                   </li>
@@ -43,16 +43,16 @@
                   </li>
                   <li class="nav-item">
                     {% if player == "game_creator" %}
-                    <input placeholder="Enter username..."
+                    <input placeholder="Enter room code..."
                             type="text"
-                            id="username-input" /><br>
+                            id="username-input" />
                     <button onclick="sendUsername()">Send</button> 
                     <button class="btn btn-secondary" onclick="startCall()">Start Call</button>
                     {% endif %}  
                     {% if player == "game_opponent" %}
-                     <input placeholder="Enter username..."
+                    <input placeholder="Enter room code..."
                             type="text"
-                            id="username-input1" /><br> 
+                            id="username-input1"/> 
                     <button class="btn btn-secondary" onclick="joinCall()">Join Call</button>
                     {% endif %}
                   </li>
@@ -73,11 +73,11 @@
     <main id='main' style="visibility: visible;">
         <!--video-call-div resides-->
         <div class="wrapper" style="display: flex; flex-direction: row;">
-            <div class="gameBoard" style="width: 100%;">
+            <div class="row gameBoard" style="width: 100%;">
                 <!-- <div class="red-turn-text mobile">
                     Reds turn
                 </div> -->
-                <div class="row">
+                <div class="col">
                     <table>
                         <tr>
                             <td class="noPieceHere"></td>
@@ -161,8 +161,8 @@
                         </tr>
                     </table>
                 </div>
-                <div class="container desktop">
-                   
+                <div class="col container desktop">
+
                     <div class="card">
                         <div class="card-body">
                             <div class="row" style="background-color: #DB162F;">
@@ -193,7 +193,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="chatbox">
-                                            Enter Chat and press enter<br>
+                                            CHAT:<br>
                                             <div><input id=input placeholder="message" /></div>
                                             <div id=box></div>
                                         </div>
@@ -203,8 +203,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-             
+            </div> 
         </div>
     </main>
     {% if turn %}
@@ -224,11 +223,11 @@
         const game_squares = {{ game_squares|safe }};
     </script>
     <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.28.2.min.js"></script>
-    <video  width="320" height="240" autoplay />
+    <video  id="screen-video" width="320" height="240" autoplay />
     <script>
       const start = document.getElementById("start");
 const stop = document.getElementById("stop");
-const video = document.querySelector("video");
+const video = document.getElementById("screen-video");
 let recorder, stream;
 
 async function startRecording() {
