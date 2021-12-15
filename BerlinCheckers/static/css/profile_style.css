@@ -117,3 +117,8 @@ body{
   display: block;
   font-size: 18px;
 }
+ button {
+   padding: 5px;
+   background-color: #919aa3;
+   margin: 3px;
+ }

@@ -105,6 +105,17 @@ span {
     display: inline-block;
 }
 
+button {
+    margin: 3px;
+}
+
+input {
+    padding: 6px;
+    border-radius: 7px;
+    border: white;
+    margin-left: 5px;
+}
+
 @media screen and (max-width: 560px) {
     .red-piece {
         height: 4.5vw;
