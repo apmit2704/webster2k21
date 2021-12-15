@@ -20,23 +20,14 @@
         Waiting for opponent...<br>
         Room Code : {{ room_code }}<br>
     </div>
-<<<<<<< HEAD
-    <div class="options">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-=======
     <div id="options" class="options" style="visibility: hidden;">
         <nav class="navbar navbar-expand-lg">
->>>>>>> 43c78c73150ac00a8c7f67bec8ac87156f0bc9cb
             <div class="container-fluid">
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navbarNav">
-<<<<<<< HEAD
-                <ul class="navbar-nav" style="display: flex; justify-content: space-evenly;">
-=======
                 <ul class="navbar-nav">
->>>>>>> 43c78c73150ac00a8c7f67bec8ac87156f0bc9cb
                   <li class="nav-item">
                     <button class="btn btn-secondary" onclick="gameDraw()">End game</button>
                   </li>
@@ -52,18 +43,6 @@
                   </li>
                   <li class="nav-item">
                     {% if player == "game_creator" %}
-<<<<<<< HEAD
-                    <!-- <input placeholder="Enter username..."
-                            type="text"
-                            id="username-input" /><br>
-                    <button onclick="sendUsername()">Send</button> -->
-                    <button class="btn btn-secondary" onclick="startCall()">Start Call</button>
-                    {% endif %}  
-                    {% if player == "game_opponent" %}
-                    <!-- <input placeholder="Enter username..."
-                            type="text"
-                            id="username-input1" /><br> -->
-=======
                     <input placeholder="Enter room code..."
                             type="text"
                             id="username-input" />
@@ -74,7 +53,6 @@
                     <input placeholder="Enter room code..."
                             type="text"
                             id="username-input1"/> 
->>>>>>> 43c78c73150ac00a8c7f67bec8ac87156f0bc9cb
                     <button class="btn btn-secondary" onclick="joinCall()">Join Call</button>
                     {% endif %}
                   </li>
@@ -95,19 +73,11 @@
     <main id='main' style="visibility: visible;">
         <!--video-call-div resides-->
         <div class="wrapper" style="display: flex; flex-direction: row;">
-<<<<<<< HEAD
-            <div class="gameBoard" style="width: 100%;">
-                <!-- <div class="red-turn-text mobile">
-                    Reds turn
-                </div> -->
-                <div class="row">
-=======
             <div class="row gameBoard" style="width: 100%;">
                 <!-- <div class="red-turn-text mobile">
                     Reds turn
                 </div> -->
                 <div class="col">
->>>>>>> 43c78c73150ac00a8c7f67bec8ac87156f0bc9cb
                     <table>
                         <tr>
                             <td class="noPieceHere"></td>
@@ -191,13 +161,8 @@
                         </tr>
                     </table>
                 </div>
-<<<<<<< HEAD
-                <div class="container desktop">
-                   
-=======
                 <div class="col container desktop">
 
->>>>>>> 43c78c73150ac00a8c7f67bec8ac87156f0bc9cb
                     <div class="card">
                         <div class="card-body">
                             <div class="row" style="background-color: #DB162F;">
@@ -228,11 +193,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="chatbox">
-<<<<<<< HEAD
-                                            Enter Chat and press enter<br>
-=======
                                             CHAT:<br>
->>>>>>> 43c78c73150ac00a8c7f67bec8ac87156f0bc9cb
                                             <div><input id=input placeholder="message" /></div>
                                             <div id=box></div>
                                         </div>
@@ -242,12 +203,7 @@
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
-            </div>
-             
-=======
             </div> 
->>>>>>> 43c78c73150ac00a8c7f67bec8ac87156f0bc9cb
         </div>
     </main>
     {% if turn %}
