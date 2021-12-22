@@ -23,5 +23,6 @@ urlpatterns = [
     path('game/', TemplateView.as_view(template_name='index.html')),
     path('', include('CheckersGame.urls'), name = "CheckersGame"),
     path('', include('accounts.urls'), name = "accounts"),
+    path('oauth/', include('social_django.urls', namespace='social')),
 ]
 urlpatterns += staticfiles_urlpatterns()

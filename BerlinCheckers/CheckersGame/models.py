@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.db.models.deletion import CASCADE
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -37,5 +38,13 @@ class BoardSquare(models.Model):
     game = models.ForeignKey(Game, on_delete=CASCADE)
 
 
+
+class FriendRequest(models.Model):
+    friends = models.ManyToManyField(User,related_name="friends",blank=True)
+    from_user = models.ForeignKey(User,related_name="from_user",on_delete=models.CASCADE)
+    to_user = models.ForeignKey(User,related_name="to_user",on_delete=models.CASCADE)
+
+
 admin.site.register(Game)
+admin.site.register(FriendRequest)
 admin.site.register(BoardSquare)
