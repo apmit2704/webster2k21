@@ -117,3 +117,23 @@ def ProfilePage(request):
         return render(request,'CheckersGame/createprofile.html')
     else:
         return redirect('/login/')
+
+def send_request(request, userID):
+    from_user = request.user
+    to_user = User.objects.get(id=userID)
+    friend_request, created = FriendRequest.object.get_or_create(from_user=from_user, to_user=to_user)
+    if created:
+        return HttpResponse('friend request sent')
+    else:
+        return HttpResponse('friend request already sent') 
+
+def accept_request(request, requestID):
+    friend_request = FriendRequest.objects.get(id=requestID)
+    if friend_request.to_user == request.user:
+        friend_request.to_user.friends.add(friend_request.from_user)
+        friend_request.from_user.friends.add(friend_request.to_user)
+        friend_request.delete()
+        return HttpResponse('accepted')
+    else:
+        return HttpResponse('deleted')
+

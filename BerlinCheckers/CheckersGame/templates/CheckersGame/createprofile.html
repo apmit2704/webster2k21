@@ -44,6 +44,14 @@
                    <h4>Score</h4>
                     <p>100</p>
               </div>
+              <div class="data">
+                   <h4>accept/reject</h4>
+                   {% for user in all_users %}
+                   {% if not user.is_superuser %}
+                <h5><a href="/send_friend_request/{{user.id}}/">{{ user }}</a></h5>
+                    {% endif %}
+                    {% endfor %}
+              </div>
             </div>
       </div>
       <div>
