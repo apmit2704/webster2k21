@@ -31,14 +31,14 @@ class GameRoom(WebsocketConsumer):
     # disconnect from the paticular game on the server 
     def disconnect(self, close_code):
         print("in disconnect")
-        gameRoomId = self.room_group_name[5:]
-        game = Game.objects.get(room_code = gameRoomId)
-        if game:
-            if game.is_over == False:
-                print("saving game results")
-                game.won = 'T'
-                game.is_over = True
-                game.save()
+        # gameRoomId = self.room_group_name[5:]
+        # game = Game.objects.get(room_code = gameRoomId)
+        # if game:
+        #     if game.is_over == False:
+        #         print("saving game results")
+        #         game.won = 'T'
+        #         game.is_over = True
+        #         game.save()
 
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
@@ -83,7 +83,7 @@ class GameRoom(WebsocketConsumer):
             game.turn = data_received['data']['turn'] 
             game.red_score = data_received['data']['redScore']
             game.black_score = data_received['data']['blackScore']
-            gameSquares = BoardSquare.objects.filter(id = game.id)
+            gameSquares = BoardSquare.objects.filter(game = game)
             for square in gameSquares:
                 square.square_value = data_received['data']['board'][square.square_no]
                 square.save()
@@ -96,4 +96,64 @@ class GameRoom(WebsocketConsumer):
         data = json.loads(data)
         self.send(text_data = json.dumps({
             'payload' : data['data']
-        }))        
+        }))    
+
+class GameBotRoom(WebsocketConsumer):    
+    def connect(self):
+        self.room_name = self.scope['url_route']['kwargs']['room_code']
+        self.room_group_name = 'room_%s' % self.room_name
+        # print(self.scope['user'])
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+        )
+        game = Game.objects.get(room_code = self.room_name)
+        if game:
+            # async_to_sync(self.channel_layer.group_send)(
+            #         self.room_group_name,{
+            #             'type' : 'run_game',
+            #             'payload' : text_data
+            #         }
+            #     )
+            self.accept()
+
+    def disconnect(self, close_code):
+        print("in disconnect")
+        # gameRoomId = self.room_group_name[5:]
+        # game = Game.objects.get(room_code = gameRoomId)
+        # if game:
+        #     if game.is_over == False:
+        #         print("saving game results")
+        #         game.won = 'T'
+        #         game.is_over = True
+        #         game.save()
+
+        async_to_sync(self.channel_layer.group_discard)(
+            self.room_group_name,
+            self.channel_name
+        )
+
+    def receive(self, text_data):
+        data = json.loads(text_data)
+        if data['data']['type'] == 'move':
+            gameRoomId = self.room_group_name[5:]
+            print(gameRoomId)
+            game = Game.objects.get(room_code = gameRoomId)
+            game.turn = data['data']['turn'] 
+            game.red_score = data['data']['redScore']
+            game.black_score = data['data']['blackScore']
+            gameSquares = BoardSquare.objects.filter(game = game)
+            for square in gameSquares:
+                square.square_value = data['data']['board'][square.square_no]
+                square.save()
+            game.save()   
+            #call minimax here and send new board state back to frontend
+
+    def run_game(self, event):
+        data = event['payload']
+        data = json.loads(data)
+        self.send(text_data = json.dumps({
+            'payload' : data['data']
+        })) 
+    
+    
