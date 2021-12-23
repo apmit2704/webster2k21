@@ -27,6 +27,9 @@ class Game(models.Model):
         MaxValueValidator(12),
         MinValueValidator(0)
     ])
+    creater_rating_change = models.IntegerField()
+    opponent_rating_change = models.IntegerField()
+    date_played = models.DateField()
 
 class BoardSquare(models.Model):
     square_value = models.IntegerField(null = True)
