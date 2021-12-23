@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 from django.contrib import admin
 from django.db.models.deletion import CASCADE
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -28,9 +29,9 @@ class Game(models.Model):
         MaxValueValidator(12),
         MinValueValidator(0)
     ])
-    creater_rating_change = models.IntegerField()
-    opponent_rating_change = models.IntegerField()
-    date_played = models.DateField()
+    creater_rating_change = models.IntegerField(default = 0)
+    opponent_rating_change = models.IntegerField(default = 0)
+    date = models.DateTimeField(default=datetime.now, blank=True)
 
 class BoardSquare(models.Model):
     square_value = models.IntegerField(null = True)
