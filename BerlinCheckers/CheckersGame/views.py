@@ -25,7 +25,8 @@ def create_game(request):
             red_score = 12,
             black_score = 12
         )
-        room_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k = 5)) + '@' + str(game.id)
+        game.save()
+        room_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k = 5)) + 'r' + str(game.id)
         game.room_code = room_code
         game.save()
         for i in range(0,64,1):
