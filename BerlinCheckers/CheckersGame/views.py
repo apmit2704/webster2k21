@@ -33,6 +33,7 @@ def create_game(request):
             sq = BoardSquare(
                 square_no = i,
                 square_value = None,
+                isKing = False,
                 game = game
             )
             if i%2 == 1 and (math.floor(i/8) == 0 or math.floor(i/8) == 2):
@@ -119,6 +120,7 @@ def play_with_bot(request):
             sq = BoardSquare(
                 square_no = i,
                 square_value = None,
+                isKing = False,
                 game = game
             )
             if i%2 == 1 and (math.floor(i/8) == 0 or math.floor(i/8) == 2):
