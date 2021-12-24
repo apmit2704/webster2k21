@@ -7,6 +7,8 @@ urlpatterns = [
     path('', home),
     path('play/<str:room_code>', play),
     path('play/', join_game),
+    path('playbot/<str:room_code>', playbot, name="playbot"),
+    path('playbot/', play_with_bot, name="playwithbot"),
     path('creategame/', create_game),
     path('logout/', logout_view),
     path('index/',views.indexPage,name="index"),

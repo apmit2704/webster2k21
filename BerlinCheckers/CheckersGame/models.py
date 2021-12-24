@@ -29,6 +29,7 @@ class Game(models.Model):
     ])
 
 class BoardSquare(models.Model):
+    isKing = models.BooleanField(default = False)
     square_value = models.IntegerField(null = True)
     square_no = models.IntegerField(validators=[
         MinValueValidator(0),

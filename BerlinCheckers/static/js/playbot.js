@@ -7,6 +7,10 @@ socket.onopen = function(e){
 socket.onmessage = function(e){
     var data = JSON.parse(e.data)
     console.log("message received")
+    if(data.payload.type === 'botMove') {
+        console.log('botMove');
+        makebotMove(data.payload.board, data.payload.game);
+    }
     
 }
 
@@ -55,6 +59,37 @@ let selectedPiece = {
 /* Event Listeners */
 
 /* Initialize Event Listeners on Pieces */
+
+function makebotMove(game_squares, game)
+{
+    turn = game.turn;
+    redScore = game.red_score;
+    blackScore = game.black_score;
+    document.getElementById("redscore").innerHTML = `${redScore}`;
+    document.getElementById("blackscore").innerHTML = `${blackScore}`;
+    for(i=0;i<64;i++)
+    {
+        square = game_squares[i];
+        if(square.square_value < 12)
+        {
+            if(square.isKing)
+                cells[i].innerHTML = `<p class="red-piece king" id="${square.square_value}"></p>`;
+            else
+                cells[i].innerHTML = `<p class="red-piece" id="${square.square_value}"></p>`; 
+        }
+        else
+        {
+            if(square.isKing)
+                cells[i].innerHTML = `<span class="black-piece king" id="${square.square_value}"></span>`;
+            else
+                cells[i].innerHTML = `<span class="black-piece" id="${square.square_value}"></span>`;
+        }
+    }
+    redPieces = document.querySelectorAll("p");
+    blackPieces = document.querySelectorAll("span");
+    givePiecesEventListeners();
+}
+
 function givePiecesEventListeners() {
     if (turn) {
         for (let i = 0; i < redPieces.length; i++) {
@@ -266,7 +301,9 @@ function makeMove(number) {
         'selectedPiece' : selectedPiece,
         'turn' : turn,
         'number' : number,
-        'board': board
+        'board': board,
+        'redScore': redScore,
+        'blackScore': blackScore
     }
 
     socket.send(JSON.stringify({

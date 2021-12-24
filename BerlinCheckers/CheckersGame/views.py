@@ -111,7 +111,8 @@ def play_with_bot(request):
             red_score = 12,
             black_score = 12
         )
-        room_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k = 5)) + '@' + str(game.id)
+        game.save()
+        room_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k = 5)) + 'r' + str(game.id)
         game.room_code = room_code
         game.save()
         for i in range(0,64,1):
@@ -136,12 +137,21 @@ def play_with_bot(request):
 def playbot(request, room_code):
     user = User.objects.get(id = request.user.id)
     if user.is_authenticated:
-        game = Game.objects.filter(room_code = room_code)
+        game = Game.objects.get(room_code = room_code)
         if game:
             if game.game_opponent == None and game.game_creater == user.id:
                 game_squares = BoardSquare.objects.filter(game = game).order_by('square_no')
+                square_list = []
+                for i in game_squares:
+                    square_list.append(i.square_value)
                 context = {
-                    'game_squares': game_squares,
+                    'username' :user.username,
+                    'room_code' : room_code,
+                    'turn' : game.turn,
+                    'redScore' : game.red_score,
+                    'blackScore' : game.black_score,
+                    'board': game_squares,
+                    'game_squares' : json.dumps(square_list),
                     'game': game,
                     'user': user
                 }
