@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Game(models.Model):
-    room_code = models.CharField(max_length=8)
+    room_code = models.CharField(max_length=100)
     game_creater = models.IntegerField()
     game_opponent = models.IntegerField(blank=True, null=True)
     is_over = models.BooleanField(default=False)
@@ -34,6 +34,7 @@ class Game(models.Model):
     date = models.DateTimeField(default=datetime.now, blank=True)
 
 class BoardSquare(models.Model):
+    isKing = models.BooleanField(default = False)
     square_value = models.IntegerField(null = True)
     square_no = models.IntegerField(validators=[
         MinValueValidator(0),
