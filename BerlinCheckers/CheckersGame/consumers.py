@@ -97,7 +97,29 @@ class GameRoom(WebsocketConsumer):
         data = json.loads(data)
         self.send(text_data = json.dumps({
             'payload' : data['data']
-        }))    
+        }))       
+
+    # calculate and update ratings
+    def calculate_rating_changes():
+        game = Game.objects.get(room_code = self.room_name)
+        k = 32
+        game_creater_rating = game.game_creater
+        game_opponent_rating = game.game_opponent
+        
+        expected_creater_score = 1/(1+ pow(10, (game_opponent_rating - game_creater_rating)/400))
+        creator_score = 1
+        
+        expected_opponent_score = 1/(1+ pow(10, (game_creater_rating - game_opponent_rating)/400))
+        opponent_score = 0
+    
+        game.creater_rating_change = game_creater_rating + k*(creator_score - expected_creater_score)
+        game.opponent_rating_change = game_opponent_rating + k*(opponent_score - expected_opponent_score)
+      
+        game.save()
+
+
+
+         
 
 class GameBotRoom(WebsocketConsumer):    
     def connect(self):

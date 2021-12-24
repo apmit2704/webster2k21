@@ -1,26 +1,171 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <script defer src="{% static 'js/scripts.js' %}"></script>
+{% extends 'base.html' %} {% load static %} {% block head %}
+<script defer src="{% static 'js/scripts.js' %}"></script>
     <script src="{% static 'js/vc.js' %}"></script>
-    <link href="{% static 'css/play_style.css' %}" rel="stylesheet">
     <link href="{% static 'css/vc_style.css' %}" rel="stylesheet">
-    <title>Checkers</title>
-</head>
-<body>
+    <link href="{% static 'css/play_style.css' %}" rel="stylesheet">
+
+{% endblock %} 
+
+{% block title%}
+Play
+{% endblock %}
+{% block content%}
     
     <div id='loadingMenu' style="visibility: hidden; color: azure;">
         Waiting for opponent...<br>
         Room Code : {{ room_code }}<br>
     </div>
-    <div id="options" class="options" style="visibility: hidden;">
+    <div class="container emp-profile">
+    <div class="row">
+        <div class="col-md-3">
+            <button class="btn btn-secondary" onclick="gameDraw()">End game</button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-secondary" id="start">
+                Start Recording
+            </button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-secondary" id="stop" disabled>
+                Stop Recording
+            </button>
+        </div>
+        <div class="col-md-3">
+            {% if player == "game_creator" %}
+            <input placeholder="Enter room code..."
+                    type="text"
+                    id="username-input" />
+            <button onclick="sendUsername()">Send</button> 
+            <button class="btn btn-secondary" onclick="startCall()">Start Call</button>
+            {% endif %}  
+            {% if player == "game_opponent" %}
+            <input placeholder="Enter room code..."
+                    type="text"
+                    id="username-input1"/> 
+            <button class="btn btn-secondary" onclick="joinCall()">Join Call</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div id="video-call-div">
+    <video muted id="local-video" autoplay></video>
+    <video id="remote-video" autoplay></video>
+    <div class="call-action-div">
+        <button onclick="muteVideo()">Mute Video</button>
+        <button onclick="muteAudio()">Mute Audio</button>
+    </div>
+</div>
+
+<div class="container emp-profile">
+    <div class="row">
+        <div class="col-md-6">
+            <table>
+                <tr>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="0"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="1"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="2"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="3"></p></td>
+                </tr>
+                <tr>
+                    <td><p class="red-piece" id="4"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="5"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="6"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="7"></p></td>
+                    <td class="noPieceHere"></td>
+                </tr>
+                <tr>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="8"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="9"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="10"></p></td>
+                    <td class="noPieceHere"></td>
+                    <td><p class="red-piece" id="11"></p></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="noPieceHere"></td>
+                    <td></td>
+                    <td class="noPieceHere"></td>
+                    <td></td>
+                    <td class="noPieceHere"></td>
+                    <td></td>
+                    <td class="noPieceHere"></td>
+                </tr>
+                <tr>
+                    <td class="noPieceHere"></td>
+                    <td></td>
+                    <td class="noPieceHere"></td>
+                    <td></td>
+                    <td class="noPieceHere"></td>
+                    <td></td>
+                    <td class="noPieceHere"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><span class="black-piece" id="12"></span></td>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="13"></span></td>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="14"></span></td>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="15"></span></td>
+                    <td class="noPieceHere"></td>
+                </tr>
+                <tr>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="16"></span></td>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="17"></span></td>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="18"></span></td>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="19"></span></td>
+                </tr>
+                <tr>
+                    <td><span class="black-piece" id="20"></span></td>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="21"></span></td>
+                    <td class="noPieceHere">
+                    <td><span class="black-piece" id="22"></span></td>
+                    <td class="noPieceHere"></td>
+                    <td><span class="black-piece" id="23"></span></td>
+                    <td class="noPieceHere"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <p class="red-turn-text">
+                Reds turn {{redScore}}
+                {% if player == "game_creator" %}
+                    (YOU)
+                {% endif %}
+            </p>
+            <p class="black-turn-text">
+                Blacks turn {{blackScore}}
+                {% if player == "game_opponent" %}
+                    (YOU)
+                {% endif %}
+            </p>
+            <div class="chatbox">
+                CHAT:
+                
+                <div id=box></div>
+                <div><input id=input placeholder="message" /></div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% comment %} <div id="options" class="options" style="visibility: hidden;">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +181,7 @@
                         Start Recording
                     </button>
                   </li>
+
                   <li class="nav-item">
                     <button class="btn btn-secondary" id="stop" disabled>
                         Stop Recording
@@ -252,7 +398,8 @@
                 </div>
             </div> 
         </div>
-    </main>
+    </main> {% endcomment %}
+
     {% if turn %}
     <script>
         let turn = true;
@@ -261,7 +408,7 @@
     <script>
         let turn = false;
     </script>
-    {% endif %}
+    {% endif %} 
     <script>
         const room_code = '{{ room_code }}';
         const player = '{{ player }}';
@@ -325,7 +472,7 @@ stop.addEventListener("click", () => {
         channel = '10chat-demo';
     pubnub.addListener({
         message: function(obj) {
-            box.innerHTML = ('' + obj.message).replace(/[<>]/g, '') + '<br>' + box.innerHTML
+            box.innerHTML =  box.innerHTML + '{{username}}' + ": " + ('' + obj.message).replace(/[<>]/g, '') + '<br>'
         }
     });
     pubnub.subscribe({
@@ -344,5 +491,4 @@ stop.addEventListener("click", () => {
 
 </script>
 
-</body>
-</html>
+{% endblock %}
