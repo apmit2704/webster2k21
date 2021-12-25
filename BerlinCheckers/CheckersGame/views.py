@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AnonymousUser
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from .models import *
@@ -6,6 +7,7 @@ from django.contrib.auth import logout
 import string
 import random
 import math, json
+from django.db.models import Q
 # Create your views here.
 
 def base(request):
@@ -102,8 +104,8 @@ def play(request, room_code):
     return render(request, 'CheckersGame/play.html', context)
 
 def play_with_bot(request):
-    user = User.objects.get(id = request.user.id)
-    if user.is_authenticated:
+    if request.user.is_authenticated:
+        user = User.objects.get(id = request.user.id)
         game = Game(
             game_creater = user.id,
             game_opponent = None,   #create dummy account for bot
@@ -134,34 +136,37 @@ def play_with_bot(request):
             sq.save()
         return redirect('/playbot/'+room_code+"?username="+user.username)
     else:
-        redirect('/login/')
+        return redirect('/login/')
 
 def playbot(request, room_code):
-    user = User.objects.get(id = request.user.id)
-    if user.is_authenticated:
-        game = Game.objects.get(room_code = room_code)
-        if game:
-            if game.game_opponent == None and game.game_creater == user.id:
-                game_squares = BoardSquare.objects.filter(game = game).order_by('square_no')
-                square_list = []
-                for i in game_squares:
-                    square_list.append(i.square_value)
-                context = {
-                    'username' :user.username,
-                    'room_code' : room_code,
-                    'turn' : game.turn,
-                    'redScore' : game.red_score,
-                    'blackScore' : game.black_score,
-                    'board': game_squares,
-                    'game_squares' : json.dumps(square_list),
-                    'game': game,
-                    'user': user
-                }
-                return render(request, 'CheckersGame/playbot.html', context)
+    if request.user is not None:
+        user = User.objects.get(id = request.user.id)
+        if user.is_authenticated:
+            game = Game.objects.get(room_code = room_code)
+            if game:
+                if game.game_opponent == None and game.game_creater == user.id:
+                    game_squares = BoardSquare.objects.filter(game = game).order_by('square_no')
+                    square_list = []
+                    for i in game_squares:
+                        square_list.append(i.square_value)
+                    context = {
+                        'username' :user.username,
+                        'room_code' : room_code,
+                        'turn' : game.turn,
+                        'redScore' : game.red_score,
+                        'blackScore' : game.black_score,
+                        'board': game_squares,
+                        'game_squares' : json.dumps(square_list),
+                        'game': game,
+                        'user': user
+                    }
+                    return render(request, 'CheckersGame/playbot.html', context)
+                else:
+                    return HttpResponse("game is not open to you")
             else:
-                return HttpResponse("game is not open to you")
+                return HttpResponse("game is not available")
         else:
-            return HttpResponse("game is not available")
+            redirect('/login/')
     else:
         redirect('/login/')
 
@@ -181,7 +186,13 @@ def indexPage(request):
 
 def ProfilePage(request):
     if request.user.is_authenticated:
-        return render(request,'CheckersGame/createprofile.html')
+        user = User.objects.get(id = request.user.id)
+        game_history = Game.objects.filter(Q(Q(game_creater = request.user.id) | Q(game_opponent = request.user.id)) & Q(is_over = True))
+        print(game_history)
+        context = {
+            'game_history': game_history
+        }
+        return render(request,'CheckersGame/createprofile.html', context)
     else:
         return redirect('/login/')
 
