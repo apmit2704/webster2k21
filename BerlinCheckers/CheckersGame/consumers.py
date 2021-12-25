@@ -182,9 +182,9 @@ class GameBotRoom(WebsocketConsumer):
             if game.is_over != True:
                 board = minimax(board, 1, True)[1]
                 for square in gameSquares:
-                    square = board[square.square_no]
-                    if square:
-                        square.save()
+                    square.square_value = board[square.square_no].square_value
+                    square.isKing = board[square.square_no].isKing
+                    square.save()
                 list = []
                 for square in board:
                     list.append(square.square_value)

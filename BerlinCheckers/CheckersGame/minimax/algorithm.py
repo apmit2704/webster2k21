@@ -3,16 +3,16 @@ from math import floor
 #black = 0, red = 1
 places = [7,9,14,18,-7,-9,-14,-18]
 
-def add_move(position, i, j):
+def add_move(position, i, j, player):
     cpposition = deepcopy(position)
-    id = cpposition[j]
     cpposition[j].square_value = None
     cpposition[j].isKing = False
     if i == 14 or i == 18 or i == -14 or i == -18:
-        if cpposition[j+floor(i/2)].square_value != None:
+        if cpposition[j+floor(i/2)].square_value != None and ((player == 0 and cpposition[j+floor(i/2)].square_value < 12) or (player == 1 and cpposition[j+floor(i/2)].square_value >= 12)):
            cpposition[j+floor(i/2)].isKing = False
            cpposition[j+floor(i/2)].square_value = None
-    cpposition[j+i] =  id
+    cpposition[j+i].square_value = position[j].square_value
+    cpposition[j+i].isKing = position[j].isKing
     return cpposition
 
 def get_all_moves(position, player):
@@ -27,14 +27,20 @@ def get_all_moves(position, player):
                     for i in places:
                         # print(i)
                         if j+i > -1 and j+i <64 and position[i+j] != None and position[j+i].square_value == None:
-                            moves.append(add_move(position, i, j))
+                            moves.append(add_move(position, i, j, player))
                 else:
                     for i in places:
                         # if i+j < 64 and i+j > -1:
                         #     print(position[j+i].square_value == None)
                         if (i == -7 or i == -9) and j+i > -1 and j+i <64 and position[i+j] != None and position[j+i].square_value == None:
-                            print("I am here")
-                            moves.append(add_move(position, i, j))
+                            if j%8 == 0:
+                                if i == -7: 
+                                    moves.append(add_move(position, i, j, player))
+                            elif (j+1)%8 == 0:
+                                if i == -9:
+                                    moves.append(add_move(position, i, j, player))
+                            else:
+                                moves.append(add_move(position, i, j, player))
     else:
         for j in range(0,64,1):
             square = position[j]
@@ -42,11 +48,18 @@ def get_all_moves(position, player):
                 if square.isKing: 
                     for i in places:
                         if j+i > -1 and j+i <64 and position[i+j] != None and position[j+i] == None:
-                            moves.append(add_move(position, i, j))
+                            moves.append(add_move(position, i, j, player))
                 else:
                     for i in places:
                         if (i == 7 or i == 9) and j+i > -1 and j+i <64 and position[i+j] != None and position[j+i] == None:
-                            moves.append(add_move(position, i, j))
+                            if j%8 == 0:
+                                if i == 9: 
+                                    moves.append(add_move(position, i, j, player))
+                            elif (j+1)%8 == 0:
+                                if i == 7:
+                                    moves.append(add_move(position, i, j, player))
+                            else:
+                                moves.append(add_move(position, i, j, player))
     print('returning moves:')
     print(moves)
     return moves

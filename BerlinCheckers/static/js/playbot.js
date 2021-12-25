@@ -86,6 +86,10 @@ function makebotMove(game_squares, isKing, _turn, red_score, black_score)
                     cells[i].innerHTML = `<span class="black-piece" id="${game_squares[i]}"></span>`;
             }
         }
+        else
+        {
+            cells[i].innerHTML = ``;
+        }
     }
     redPieces = document.querySelectorAll("p");
     blackPieces = document.querySelectorAll("span");
