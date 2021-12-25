@@ -9,9 +9,8 @@ socket.onmessage = function(e){
     console.log("message received")
     if(data.payload.type === 'botMove') {
         console.log('botMove');
-        makebotMove(data.payload.board, data.payload.game);
+        makebotMove(data.payload.game_squares_value, data.payload.game_isKing, data.payload.turn, data.payload.redScore, data.payload.blackScore);
     }
-    
 }
 
 socket.onclose = function(e){
@@ -60,29 +59,36 @@ let selectedPiece = {
 
 /* Initialize Event Listeners on Pieces */
 
-function makebotMove(game_squares, game)
+function makebotMove(game_squares, isKing, _turn, red_score, black_score)
 {
-    turn = game.turn;
-    redScore = game.red_score;
-    blackScore = game.black_score;
+    turn = _turn;
+    redScore = red_score;
+    blackScore = black_score;
     document.getElementById("redscore").innerHTML = `${redScore}`;
     document.getElementById("blackscore").innerHTML = `${blackScore}`;
+    console.log(game_squares)
     for(i=0;i<64;i++)
     {
-        square = game_squares[i];
-        if(square.square_value < 12)
+        if(game_squares[i] != null)
         {
-            if(square.isKing)
-                cells[i].innerHTML = `<p class="red-piece king" id="${square.square_value}"></p>`;
-            else
-                cells[i].innerHTML = `<p class="red-piece" id="${square.square_value}"></p>`; 
+            if(game_squares[i] < 12)
+            {
+                if(isKing[i])
+                    cells[i].innerHTML = `<p class="red-piece king" id="${game_squares[i]}"></p>`;
+                else
+                    cells[i].innerHTML = `<p class="red-piece" id="${game_squares[i]}"></p>`; 
+            }
+            else if(game_squares[i] > 11)
+            {
+                if(isKing[i])
+                    cells[i].innerHTML = `<span class="black-piece king" id="${game_squares[i]}"></span>`;
+                else
+                    cells[i].innerHTML = `<span class="black-piece" id="${game_squares[i]}"></span>`;
+            }
         }
         else
         {
-            if(square.isKing)
-                cells[i].innerHTML = `<span class="black-piece king" id="${square.square_value}"></span>`;
-            else
-                cells[i].innerHTML = `<span class="black-piece" id="${square.square_value}"></span>`;
+            cells[i].innerHTML = ``;
         }
     }
     redPieces = document.querySelectorAll("p");
