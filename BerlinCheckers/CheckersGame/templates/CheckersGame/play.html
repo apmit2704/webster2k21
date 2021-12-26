@@ -5,10 +5,15 @@
 <link href="{% static 'css/play_style.css' %}" rel="stylesheet" />
 <link href="{% static 'css/vc_style.css' %}" rel="stylesheet" />
 
+
 {% endblock %} {% block title%} Play {% endblock %} {% block content%}
 <div id="loadingMenu" style="visibility: hidden; color: black">
   Waiting for opponent...<br />
-  Room Code : {{ room_code }}<br />
+  Room Code : 
+<span id="link" style="background-color:#D3D3D3;">{{ room_code }}</span>
+<span></span>
+<!-- The button used to copy the text -->
+<span onclick="myFunction()" class="fa fa-copy mr-3" data-toggle="tooltip" data-placement="top" title="Copy Code"></span>
 </div>
 <div id="main">
   <div id="video-call-div">
@@ -220,6 +225,22 @@
       }
     });
   })();
+
+
+  function myFunction() {
+    /* Get the text field */
+    var copyText = document.getElementById("link");
+  
+    /* Select the text field 
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); 
+    */
+     /* Copy the text inside the text field */
+    navigator.clipboard.writeText(copyText.innerHTML);
+  
+    /* Alert the copied text */
+    alert("Copied the text: " + copyText.innerHTML);
+  }
 </script>
 
 {% endblock %}
