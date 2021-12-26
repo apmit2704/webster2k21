@@ -1,6 +1,12 @@
 
-# BERLIN CHECKERS
-# Features (Proposed):- 
+# CHECKERS Game
+An online paltform to play checkers with friends.
+
+.......
+
+Still looking for friend? Play with us!
+
+## Salient Features :- 
  - Login/SignUp
  - Propose Draw/Accept Draw option: 
     - If one of the users closes the window, the game is terminated. 
@@ -17,7 +23,17 @@
  - Dark mode. 
  - Site tour.
 
-steps for running:
+## Screenshots of the Game :- 
+ - Home Page
+ - Login/SignUp
+ - Play with a friend
+ - Video Calling a friend
+ - Play with the computer
+ - Profile Page
+
+## External Libraries Used :- 
+
+## Steps for running the project :-
  - open one terminal window and run python manage.py runserver for connecting local host
  - open another terminal window and run node server.js for connecting the websocket 
 
