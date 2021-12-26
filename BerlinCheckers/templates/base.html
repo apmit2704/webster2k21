@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.jss" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" ></script>
+    
+  <link rel="stylesheet" href="https://unpkg.com/driver.js/dist/driver.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
   {% block css %} 
@@ -70,7 +72,7 @@
     {% endblock %}
 
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
-		
+		<link rel="stylesheet" href="https://unpkg.com/driver.js/dist/driver.min.css">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
@@ -81,20 +83,20 @@
 		
 		<div class="wrapper d-flex align-items-stretch">
 			<nav id="sidebar">
-				<div class="custom-menu">
+				<div class="custom-menu" id="side">
 					<button type="button" id="sidebarCollapse" class="btn btn-primary">
 	          <i class="fa fa-bars"></i>
 	          <span class="sr-only">Toggle Menu</span>
 	        </button>
         </div>
 				<div class="p-4">
-		  		<h1><a href="index.html" class="logo">Checkers <span>Play Checkers</span></a></h1>
+		  		<h1><a href="index.html" class="logo">Checkers <span id="intro">Play Checkers</span></a></h1>
 	        <ul class="list-unstyled components mb-5">
 	          <li class="active">
 	            <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
 	          </li>
 	          <li>
-	              <a href="#"><span class="fa fa-user mr-3"></span> How To Play</a>
+	              <a href="#"><span class="fa fa-user mr-3" id="play"></span> How To Play</a>
 	          </li>
 	          <li>
               <a href="#"><span class="fa fa-briefcase mr-3"></span> Play</a>
@@ -104,10 +106,10 @@
 	          </li>
 	          
 	          <li>
-              <a href="#"><span class="fa fa-cogs mr-3"></span> Settings</a>
+              <a href="#"><span class="fa fa-cogs mr-3" id="settings"></span> Settings</a>
 	          </li>
 	          <li>
-              <a href="{% url 'profile' %}"><span class="fa fa-paper-plane mr-3"></span> Profile</a>
+              <a href="{% url 'profile' %}"><span class="fa fa-paper-plane mr-3" id="profile"></span> Profile</a>
 	          </li>
             {% if user.is_authenticated %}
             <li>
@@ -138,7 +140,9 @@
         {% endblock %}
       </div>
 		</div>
-
+    <script src="https://unpkg.com/driver.js/dist/driver.min.js">
+    </script>
+    <script src="{% static 'js/site_tour.js' %}"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/popper.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
