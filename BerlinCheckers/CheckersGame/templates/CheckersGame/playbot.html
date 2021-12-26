@@ -1,7 +1,5 @@
 {% extends 'base.html' %} {% load static %} {% block head %}
 <script defer src="{% static 'js/playbot.js' %}"></script>
-<script src="{% static 'js/vc.js' %}"></script>
-<link href="{% static 'css/vc_style.css' %}" rel="stylesheet" />
 <link href="{% static 'css/playbot_style.css' %}" rel="stylesheet" />
 
 {% endblock %} {% block title%} Play Bot {% endblock %} {% block content%}
@@ -37,14 +35,7 @@
     </div>
   </div>
 </div>
-<div id="video-call-div">
-  <video muted id="local-video" autoplay></video>
-  <video id="remote-video" autoplay></video>
-  <div class="call-action-div">
-    <button onclick="muteVideo()">Mute Video</button>
-    <button onclick="muteAudio()">Mute Audio</button>
-  </div>
-</div>
+
 
 <div class="container emp-profile">
   <div class="row">
