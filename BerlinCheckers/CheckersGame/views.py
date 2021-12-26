@@ -187,10 +187,16 @@ def indexPage(request):
 def ProfilePage(request):
     if request.user.is_authenticated:
         user = User.objects.get(id = request.user.id)
+        try:
+            profile = Profile.objects.get(user = user)
+        except:
+            profile = []
         game_history = Game.objects.filter(Q(Q(game_creater = request.user.id) | Q(game_opponent = request.user.id)) & Q(is_over = True))
         print(game_history)
         context = {
-            'game_history': game_history
+            'game_history': game_history,
+            'user': user,
+            'profile': profile
         }
         return render(request,'CheckersGame/createprofile.html', context)
     else:

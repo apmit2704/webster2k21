@@ -155,7 +155,27 @@ class GameBotRoom(WebsocketConsumer):
 
     def receive(self, text_data):
         data = json.loads(text_data)
-        if data['data']['type'] == 'state':
+        if data['data']['type'] == 'endgame':
+            gameRoomId = self.room_group_name[5:]
+            print(gameRoomId)
+            game = Game.objects.get(room_code = gameRoomId)
+            if game:
+                if data['data']['result'] == 'R':
+                    game.won = 'R'
+                elif data['data']['result'] == 'B':
+                    game.won = 'B'
+                elif data['data']['result'] == 'D':
+                    game.won = 'D'
+                game.is_over = True
+                game.save()
+                async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,{
+                    'type' : 'run_game',
+                    'payload' : text_data
+                }
+            )
+            self.close()
+        elif data['data']['type'] == 'state':
             gameRoomId = self.room_group_name[5:]
             print(gameRoomId)
             game = Game.objects.get(room_code = gameRoomId)

@@ -5,8 +5,25 @@ from django.db.models.deletion import CASCADE
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=1000)
+    profile_image = models.ImageField(upload_to ='uploads/% Y/% m/% d/')
+    status = models.BooleanField(default=False)
+    name = models.CharField(max_length=100, blank=True, null=True)
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 class Game(models.Model):
     room_code = models.CharField(max_length=100)

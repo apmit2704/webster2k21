@@ -19,8 +19,11 @@ Profile
               <div class="profile-img">
                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
                   <div class="file btn btn-lg btn-primary">
+                    <form id="update_user_form" method="POST" action="/update_user/"
+                    enctype="multipart/form-data">
                       Change Photo
                       <input type="file" name="file"/>
+                    </form>
                   </div>
               </div>
           </div>
@@ -30,7 +33,7 @@ Profile
                             {{ request.user }}
                           </h5>
                           <p class="status">hello</p>
-                          <p class="proile-rating">RATING : <span>{{ user.rating }}</span></p>
+                          <p class="proile-rating">RATING : <span>{{ user.profile.rating }}</span></p>
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                       <li class="nav-item">
                           <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
@@ -97,6 +100,20 @@ Profile
                             
                   </div>
                   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <div class="row">
+                      <div class="col-md-3">
+                          <label>Room Code</label>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Result</label>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Date</label>
+                      </div>
+                      <div class="col-md-3">
+                        <label>Rating Change</label>
+                      </div>
+                    </div>
                     {% for game in game_history %}
                       <div class="row">
                           <div class="col-md-3">
