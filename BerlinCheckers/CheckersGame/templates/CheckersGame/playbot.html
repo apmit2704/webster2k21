@@ -1,4 +1,235 @@
-{% load static %}
+{% extends 'base.html' %} {% load static %} {% block head %}
+<script defer src="{% static 'js/playbot.js' %}"></script>
+    <script src="{% static 'js/vc.js' %}"></script>
+    <link href="{% static 'css/vc_style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/playbot_style.css' %}" rel="stylesheet">
+
+{% endblock %} 
+
+{% block title%}
+Play Bot
+{% endblock %}
+{% block content%}
+    
+ 
+    <div class="container emp-profile">
+    <div class="row">
+        <div class="col-md-3">
+            <button class="btn btn-secondary" onclick="gameDraw()">End game</button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-secondary" id="start">
+                Start Recording
+            </button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-secondary" id="stop" disabled>
+                Stop Recording
+            </button>
+        </div>
+        <div class="col-md-3">
+            {% if player == "game_creator" %}
+            <input placeholder="Enter room code..."
+                    type="text"
+                    id="username-input" />
+            <button onclick="sendUsername()">Send</button> 
+            <button class="btn btn-secondary" onclick="startCall()">Start Call</button>
+            {% endif %}  
+            {% if player == "game_opponent" %}
+            <input placeholder="Enter room code..."
+                    type="text"
+                    id="username-input1"/> 
+            <button class="btn btn-secondary" onclick="joinCall()">Join Call</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div id="video-call-div">
+    <video muted id="local-video" autoplay></video>
+    <video id="remote-video" autoplay></video>
+    <div class="call-action-div">
+        <button onclick="muteVideo()">Mute Video</button>
+        <button onclick="muteAudio()">Mute Audio</button>
+    </div>
+</div>
+
+<div class="container emp-profile">
+    <div class="row">
+        <div class="col-md-6">
+            <table>
+                {% for square in board %}
+                    {% if square.square_no|divisibleby:8 %}
+                    <tr>
+                    {% endif %}
+                    {% if square.square_value is None %}
+                    {% if square.square_no < 8 and square.square_no|divisibleby:2 %}
+                    <td class="noPieceHere"></td>
+                    {% elif square.square_no < 8 and square.square_no|add:1|divisibleby:2 %}
+                    <td></td>
+                    {% elif square.square_no < 16 and square.square_no|add:1|divisibleby:2 %}
+                    <td class="noPieceHere"></td>
+                    {% elif square.square_no < 16 and square.square_no|divisibleby:2 %}
+                    <td></td>
+                    {% elif square.square_no < 24 and square.square_no|divisibleby:2 %}
+                    <td class="noPieceHere"></td>
+                    {% elif square.square_no < 24 and square.square_no|add:1|divisibleby:2 %}
+                    <td></td>
+                    {% elif square.square_no < 32 and square.square_no|add:1|divisibleby:2 %}
+                    <td class="noPieceHere"></td>
+                    {% elif square.square_no < 32 and square.square_no|divisibleby:2 %}
+                    <td></td>
+                    {% elif square.square_no < 40 and square.square_no|divisibleby:2 %}
+                    <td class="noPieceHere"></td>
+                    {% elif square.square_no < 40 and square.square_no|add:1|divisibleby:2 %}
+                    <td></td>
+                    {% elif square.square_no < 48 and square.square_no|add:1|divisibleby:2 %}
+                    <td class="noPieceHere"></td>
+                    {% elif square.square_no < 48 and square.square_no|divisibleby:2 %}
+                    <td></td>
+                    {% elif square.square_no < 56 and square.square_no|divisibleby:2 %}
+                    <td class="noPieceHere"></td>
+                    {% elif square.square_no < 56 and square.square_no|add:1|divisibleby:2 %}
+                    <td></td>
+                    {% elif square.square_no < 64 and square.square_no|add:1|divisibleby:2 %}
+                    <td class="noPieceHere"></td>
+                    {% elif square.square_no < 64 and square.square_no|divisibleby:2 %}
+                    <td></td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    {% elif square.square_value < 12 %}
+                    <td><p class="red-piece" id="{{ square.square_value }}"></p></td>
+                    {% else %}
+                    <td><span class="black-piece" id="{{ square.square_value }}"></span></td>
+                    {% endif %}
+                    {% if square.square_no|add:1|divisibleby:8 %}
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+        </table>
+            
+        </div>
+        <div class="col-md-6">
+            <p class="red-turn-text">
+                Reds turn {{redScore}}
+                {% if player == "game_creator" %}
+                    (YOU)
+                {% endif %}
+            </p>
+            <p class="black-turn-text">
+                Blacks turn {{blackScore}}
+                {% if player == "game_opponent" %}
+                    (YOU)
+                {% endif %}
+            </p>
+            <div class="chatbox">
+                CHAT:
+                
+                <div id=box></div>
+                <div><input id=input placeholder="message" /></div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% if turn %}
+<script>
+    let turn = true;
+</script>
+{% else %}
+<script>
+    let turn = false;
+</script>
+{% endif %} 
+<script>
+    const room_code = '{{ room_code }}';
+    const player = '{{ player }}';
+    let redScore = {{ redScore|safe }};
+    let blackScore = {{ blackScore|safe }};
+    const game_squares = {{ game_squares|safe }};
+</script>
+<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.28.2.min.js"></script>
+<video  id="screen-video" width="320" height="240" autoplay />
+<script>
+  const start = document.getElementById("start");
+const stop = document.getElementById("stop");
+const video = document.getElementById("screen-video");
+let recorder, stream;
+
+async function startRecording() {
+stream = await navigator.mediaDevices.getDisplayMedia({
+video: { mediaSource: "screen" }
+});
+recorder = new MediaRecorder(stream);
+
+const chunks = [];
+recorder.ondataavailable = e => chunks.push(e.data);
+recorder.onstop = e => {
+const completeBlob = new Blob(chunks, { type: chunks[0].type });
+video.src = URL.createObjectURL(completeBlob);
+};
+
+recorder.start();
+}
+
+start.addEventListener("click", () => {
+start.setAttribute("disabled", true);
+stop.removeAttribute("disabled");
+
+startRecording();
+});
+
+stop.addEventListener("click", () => {
+stop.setAttribute("disabled", true);
+start.removeAttribute("disabled");
+
+recorder.stop();
+stream.getVideoTracks()[0].stop();
+});  
+
+
+
+
+
+(function() {
+var pubnub = new PubNub({
+    publishKey: 'pub-c-41c5ef93-a994-4e54-9307-c866bdb8e3a5',
+    subscribeKey: 'sub-c-32489648-5a95-11ec-96e9-32997ff5e1b9'
+});
+function $(id) {
+    return document.getElementById(id);
+}
+var box = $('box'),
+    input = $('input'),
+    channel = '10chat-demo';
+pubnub.addListener({
+    message: function(obj) {
+        box.innerHTML =  box.innerHTML + '{{username}}' + ": " + ('' + obj.message).replace(/[<>]/g, '') + '<br>'
+    }
+});
+pubnub.subscribe({
+    channels: [channel]
+});
+input.addEventListener('keyup', function(e) {
+    if ((e.keyCode || e.charCode) === 13) {
+        pubnub.publish({
+            channel: channel,
+            message: input.value,
+            x: (input.value = '')
+        });
+    }
+});
+})();
+
+</script>
+
+{% endblock %}
+
+
+
+
+{% comment %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -339,4 +570,4 @@ stop.addEventListener("click", () => {
 </script>
 
 </body>
-</html>
+</html> {% endcomment %}
