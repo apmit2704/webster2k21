@@ -341,7 +341,7 @@ function giveCellsClick() {
 
 // makes the move that was clicked
 function makeMove(number) {
-
+  
     console.log(selectedPiece.pieceId);
     console.log(selectedPiece.indexOfBoardPiece);
     console.log(number);
@@ -384,6 +384,8 @@ function makeMove(number) {
     } else {
         changeData(indexOfPiece, indexOfPiece + number);
     }
+
+ 
 }
 
 function setOpponentPiece(selectedPiece, number, turnOpp){
