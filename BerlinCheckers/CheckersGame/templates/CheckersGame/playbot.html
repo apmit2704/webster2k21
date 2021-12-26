@@ -50,70 +50,63 @@
   <div class="row">
     <div class="col-md-6">
       <table>
-        {% for square in board %} {% if square.square_no|divisibleby:8 %}
-        <tr>
-          {% endif %} {% if square.square_value is None %} {% if
-          square.square_no < 8 and square.square_no|divisibleby:2 %}
-          <td class="noPieceHere"></td>
-          {% elif square.square_no < 8 and square.square_no|add:1|divisibleby:2
-          %}
-          <td></td>
-          {% elif square.square_no < 16 and square.square_no|add:1|divisibleby:2
-          %}
-          <td class="noPieceHere"></td>
-          {% elif square.square_no < 16 and square.square_no|divisibleby:2 %}
-          <td></td>
-          {% elif square.square_no < 24 and square.square_no|divisibleby:2 %}
-          <td class="noPieceHere"></td>
-          {% elif square.square_no < 24 and square.square_no|add:1|divisibleby:2
-          %}
-          <td></td>
-          {% elif square.square_no < 32 and square.square_no|add:1|divisibleby:2
-          %}
-          <td class="noPieceHere"></td>
-          {% elif square.square_no < 32 and square.square_no|divisibleby:2 %}
-          <td></td>
-          {% elif square.square_no < 40 and square.square_no|divisibleby:2 %}
-          <td class="noPieceHere"></td>
-          {% elif square.square_no < 40 and square.square_no|add:1|divisibleby:2
-          %}
-          <td></td>
-          {% elif square.square_no < 48 and square.square_no|add:1|divisibleby:2
-          %}
-          <td class="noPieceHere"></td>
-          {% elif square.square_no < 48 and square.square_no|divisibleby:2 %}
-          <td></td>
-          {% elif square.square_no < 56 and square.square_no|divisibleby:2 %}
-          <td class="noPieceHere"></td>
-          {% elif square.square_no < 56 and square.square_no|add:1|divisibleby:2
-          %}
-          <td></td>
-          {% elif square.square_no < 64 and square.square_no|add:1|divisibleby:2
-          %}
-          <td class="noPieceHere"></td>
-          {% elif square.square_no < 64 and square.square_no|divisibleby:2 %}
-          <td></td>
-          {% else %}
-          <td></td>
-          {% endif %} {% elif square.square_value < 12 %}
-          <td><p class="red-piece" id="{{ square.square_value }}"></p></td>
-          {% else %}
-          <td>
-            <span class="black-piece" id="{{ square.square_value }}"></span>
-          </td>
-          {% endif %} {% if square.square_no|add:1|divisibleby:8 %}
-        </tr>
-        {% endif %} {% endfor %}
-      </table>
+        {% for square in board %}
+            {% if square.square_no|divisibleby:8 %}
+            <tr>
+            {% endif %}
+            {% if square.square_value is None %}
+            {% if square.square_no < 8 and square.square_no|divisibleby:2 %}
+            <td class="noPieceHere"></td>
+            {% elif square.square_no < 8 and square.square_no|add:1|divisibleby:2 %}
+            <td></td>
+            {% elif square.square_no < 16 and square.square_no|add:1|divisibleby:2 %}
+            <td class="noPieceHere"></td>
+            {% elif square.square_no < 16 and square.square_no|divisibleby:2 %}
+            <td></td>
+            {% elif square.square_no < 24 and square.square_no|divisibleby:2 %}
+            <td class="noPieceHere"></td>
+            {% elif square.square_no < 24 and square.square_no|add:1|divisibleby:2 %}
+            <td></td>
+            {% elif square.square_no < 32 and square.square_no|add:1|divisibleby:2 %}
+            <td class="noPieceHere"></td>
+            {% elif square.square_no < 32 and square.square_no|divisibleby:2 %}
+            <td></td>
+            {% elif square.square_no < 40 and square.square_no|divisibleby:2 %}
+            <td class="noPieceHere"></td>
+            {% elif square.square_no < 40 and square.square_no|add:1|divisibleby:2 %}
+            <td></td>
+            {% elif square.square_no < 48 and square.square_no|add:1|divisibleby:2 %}
+            <td class="noPieceHere"></td>
+            {% elif square.square_no < 48 and square.square_no|divisibleby:2 %}
+            <td></td>
+            {% elif square.square_no < 56 and square.square_no|divisibleby:2 %}
+            <td class="noPieceHere"></td>
+            {% elif square.square_no < 56 and square.square_no|add:1|divisibleby:2 %}
+            <td></td>
+            {% elif square.square_no < 64 and square.square_no|add:1|divisibleby:2 %}
+            <td class="noPieceHere"></td>
+            {% elif square.square_no < 64 and square.square_no|divisibleby:2 %}
+            <td></td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            {% elif square.square_value < 12 %}
+            <td><p class="red-piece" id="{{ square.square_value }}"></p></td>
+            {% else %}
+            <td><span class="black-piece" id="{{ square.square_value }}"></span></td>
+            {% endif %}
+            {% if square.square_no|add:1|divisibleby:8 %}
+            </tr>
+            {% endif %}
+        {% endfor %}
+       </table>
     </div>
     <div class="col-md-6">
       <p class="red-turn-text">
-        Reds turn {{redScore}} {% if player == "game_creator" %} (YOU) {% endif
-        %}
+        Reds turn {{redScore}} {% if player == "game_creator" %} (YOU) {% endif %}
       </p>
       <p class="black-turn-text">
-        Blacks turn {{blackScore}} {% if player == "game_opponent" %} (YOU) {%
-        endif %}
+        Blacks turn {{blackScore}} {% if player == "game_opponent" %} (YOU) {% endif %}
       </p>
     </div>
   </div>
