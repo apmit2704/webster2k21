@@ -36,6 +36,10 @@
                     <li><button type="button" class="btn btn-outline-dark btn-lg">Sign Up</button></li>
                     <li><button type="button" class="btn btn-outline-success btn-lg">Log In</button></li>
                     <ul>
+                    {% else %}
+                    <ul>
+                      <li><a href="#"><i class="fas fa-id-badge"></i>Logout</a></li>
+                    <ul>
                     {% endif %}
                    
                    
@@ -105,6 +109,11 @@
 	          <li>
               <a href="{% url 'profile' %}"><span class="fa fa-paper-plane mr-3"></span> Profile</a>
 	          </li>
+            {% if user.is_authenticated %}
+            <li>
+              <a href="/logout/"><span class="fa fa-cogs mr-3"></span>Logout</a>
+            </li>
+            {% endif %}
 	        </ul>
 
 	        <div class="mb-1">

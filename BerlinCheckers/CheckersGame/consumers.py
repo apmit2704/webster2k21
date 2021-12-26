@@ -4,6 +4,23 @@ import json
 from .models import *
 from .minimax.algorithm import *
 
+# calculate and update ratings
+def calculate_rating_changes(room_code):
+    game = Game.objects.get(room_code = room_code)
+    k = 32
+    game_creater_rating = game.game_creater
+    game_opponent_rating = game.game_opponent
+    
+    expected_creater_score = 1/(1+ pow(10, (game_opponent_rating - game_creater_rating)/400))
+    creator_score = 1
+    
+    expected_opponent_score = 1/(1+ pow(10, (game_creater_rating - game_opponent_rating)/400))
+    opponent_score = 0
+
+    game.creater_rating_change = game_creater_rating + k*(creator_score - expected_creater_score)
+    game.opponent_rating_change = game_opponent_rating + k*(opponent_score - expected_opponent_score)
+    
+    game.save()
 
 class GameRoom(WebsocketConsumer):
     # connect to a paticular game on the server
@@ -69,6 +86,7 @@ class GameRoom(WebsocketConsumer):
                 elif data_received['data']['result'] == 'D':
                     game.won = 'D'
                 game.is_over = True
+                calculate_rating_changes(gameRoomId)
                 game.save()
                 async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,{
@@ -99,28 +117,7 @@ class GameRoom(WebsocketConsumer):
             'payload' : data['data']
         }))       
 
-    # calculate and update ratings
-    def calculate_rating_changes():
-        game = Game.objects.get(room_code = self.room_name)
-        k = 32
-        game_creater_rating = game.game_creater
-        game_opponent_rating = game.game_opponent
-        
-        expected_creater_score = 1/(1+ pow(10, (game_opponent_rating - game_creater_rating)/400))
-        creator_score = 1
-        
-        expected_opponent_score = 1/(1+ pow(10, (game_creater_rating - game_opponent_rating)/400))
-        opponent_score = 0
     
-        game.creater_rating_change = game_creater_rating + k*(creator_score - expected_creater_score)
-        game.opponent_rating_change = game_opponent_rating + k*(opponent_score - expected_opponent_score)
-      
-        game.save()
-
-
-
-         
-
 class GameBotRoom(WebsocketConsumer):    
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_code']
