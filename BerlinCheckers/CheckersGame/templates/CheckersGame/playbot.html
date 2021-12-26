@@ -122,12 +122,7 @@ Play Bot
                     (YOU)
                 {% endif %}
             </p>
-            <div class="chatbox">
-                CHAT:
-                
-                <div id=box></div>
-                <div><input id=input placeholder="message" /></div>
-            </div>
+            
             
         </div>
     </div>
@@ -192,35 +187,7 @@ stream.getVideoTracks()[0].stop();
 
 
 
-(function() {
-var pubnub = new PubNub({
-    publishKey: 'pub-c-41c5ef93-a994-4e54-9307-c866bdb8e3a5',
-    subscribeKey: 'sub-c-32489648-5a95-11ec-96e9-32997ff5e1b9'
-});
-function $(id) {
-    return document.getElementById(id);
-}
-var box = $('box'),
-    input = $('input'),
-    channel = '10chat-demo';
-pubnub.addListener({
-    message: function(obj) {
-        box.innerHTML =  box.innerHTML + '{{username}}' + ": " + ('' + obj.message).replace(/[<>]/g, '') + '<br>'
-    }
-});
-pubnub.subscribe({
-    channels: [channel]
-});
-input.addEventListener('keyup', function(e) {
-    if ((e.keyCode || e.charCode) === 13) {
-        pubnub.publish({
-            channel: channel,
-            message: input.value,
-            x: (input.value = '')
-        });
-    }
-});
-})();
+
 
 </script>
 
