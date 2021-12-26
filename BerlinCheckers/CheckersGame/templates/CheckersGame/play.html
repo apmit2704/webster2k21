@@ -206,8 +206,6 @@
       message: function (obj) {
         box.innerHTML =
           box.innerHTML +
-          "{{username}}" +
-          ": " +
           ("" + obj.message).replace(/[<>]/g, "") +
           "<br>";
       },
@@ -219,7 +217,7 @@
       if ((e.keyCode || e.charCode) === 13) {
         pubnub.publish({
           channel: channel,
-          message: input.value,
+          message: "{{ username }}: " + input.value,
           x: (input.value = ""),
         });
       }
