@@ -4,6 +4,23 @@ import json
 from .models import *
 from .minimax.algorithm import *
 
+# calculate and update ratings
+def calculate_rating_changes(room_code):
+    game = Game.objects.get(room_code = room_code)
+    k = 32
+    game_creater_rating = game.game_creater
+    game_opponent_rating = game.game_opponent
+    
+    expected_creater_score = 1/(1+ pow(10, (game_opponent_rating - game_creater_rating)/400))
+    creator_score = 1
+    
+    expected_opponent_score = 1/(1+ pow(10, (game_creater_rating - game_opponent_rating)/400))
+    opponent_score = 0
+
+    game.creater_rating_change = game_creater_rating + k*(creator_score - expected_creater_score)
+    game.opponent_rating_change = game_opponent_rating + k*(opponent_score - expected_opponent_score)
+    
+    game.save()
 
 class GameRoom(WebsocketConsumer):
     # connect to a paticular game on the server
@@ -69,6 +86,7 @@ class GameRoom(WebsocketConsumer):
                 elif data_received['data']['result'] == 'D':
                     game.won = 'D'
                 game.is_over = True
+                calculate_rating_changes(gameRoomId)
                 game.save()
                 async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,{
@@ -99,28 +117,7 @@ class GameRoom(WebsocketConsumer):
             'payload' : data['data']
         }))       
 
-    # calculate and update ratings
-    def calculate_rating_changes():
-        game = Game.objects.get(room_code = self.room_name)
-        k = 32
-        game_creater_rating = game.game_creater
-        game_opponent_rating = game.game_opponent
-        
-        expected_creater_score = 1/(1+ pow(10, (game_opponent_rating - game_creater_rating)/400))
-        creator_score = 1
-        
-        expected_opponent_score = 1/(1+ pow(10, (game_creater_rating - game_opponent_rating)/400))
-        opponent_score = 0
     
-        game.creater_rating_change = game_creater_rating + k*(creator_score - expected_creater_score)
-        game.opponent_rating_change = game_opponent_rating + k*(opponent_score - expected_opponent_score)
-      
-        game.save()
-
-
-
-         
-
 class GameBotRoom(WebsocketConsumer):    
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_code']
@@ -143,13 +140,13 @@ class GameBotRoom(WebsocketConsumer):
     def disconnect(self, close_code):
         print("in disconnect")
         gameRoomId = self.room_group_name[5:]
-        game = Game.objects.get(room_code = gameRoomId)
-        if game:
-            if game.is_over == False:
-                print("saving game results")
-                game.won = 'T'
-                game.is_over = True
-                game.save()
+        # game = Game.objects.get(room_code = gameRoomId)
+        # if game:
+        #     if game.is_over == False:
+        #         print("saving game results")
+        #         game.won = 'T'
+        #         game.is_over = True
+        #         game.save()
 
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name,
@@ -158,14 +155,14 @@ class GameBotRoom(WebsocketConsumer):
 
     def receive(self, text_data):
         data = json.loads(text_data)
-        if data['data']['type'] == 'move':
+        if data['data']['type'] == 'state':
             gameRoomId = self.room_group_name[5:]
             print(gameRoomId)
             game = Game.objects.get(room_code = gameRoomId)
             game.turn = data['data']['turn'] 
             game.red_score = data['data']['redScore']
             game.black_score = data['data']['blackScore']
-            gameSquares = BoardSquare.objects.filter(game = game)
+            gameSquares = BoardSquare.objects.filter(game = game).order_by('square_no')
             board = []
             for square in gameSquares:
                 square.square_value = data['data']['board'][square.square_no]
@@ -180,10 +177,15 @@ class GameBotRoom(WebsocketConsumer):
                 game.won = game.game_creater
             game.save()
             if game.is_over != True:
-                board = minimax(board, 5, True)[0]
+                board = minimax(board, 1, True)[1]
                 for square in gameSquares:
-                    square = board[square.square_no]
+                    square.square_value = board[square.square_no].square_value
+                    square.isKing = board[square.square_no].isKing
                     square.save()
+                list = []
+                for square in board:
+                    list.append(square.square_value)
+                print(list)
                 game.turn = True
                 game.red_score = calc_score(board, 1)
                 game.black_score = calc_score(board, 0)
@@ -194,12 +196,23 @@ class GameBotRoom(WebsocketConsumer):
                     game.is_over = True
                     game.won = game.game_creater
                 game.save()
+                game_square_value_list = []
+                game_isKing_list = []
+                board = BoardSquare.objects.filter(game = game).order_by('square_no')
+                for square in board:
+                    game_square_value_list.append(square.square_value)
+                    game_isKing_list.append(square.isKing)
+                print(game_square_value_list)
                 context = {
                     'type': 'botMove',
-                    'game_squares': board,
-                    'game': game
+                    'game_squares_value': game_square_value_list,
+                    'game_isKing': game_isKing_list,
+                    'turn': game.turn,
+                    'redScore': game.red_score,
+                    'blackScore': game.black_score,
+                    'is_over': game.is_over 
                 }
-                text_data = json.dumps(context)
+                text_data = json.dumps({'data' : context})
                 async_to_sync(self.channel_layer.group_send)(
                     self.room_group_name,{
                         'type' : 'run_game',
