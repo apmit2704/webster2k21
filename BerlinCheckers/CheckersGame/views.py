@@ -54,9 +54,9 @@ def create_game(request):
 
 def logout_view(request):
     if request.user.is_authenticated:
-        user = User.objects.get(id = request.user.id)
-        user.status = False
-        user.save()
+        # user = User.objects.get(id = request.user.id)
+        # user.status = False
+        # user.save()
         logout(request)
     return redirect('/')
 
