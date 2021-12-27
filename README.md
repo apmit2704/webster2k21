@@ -24,14 +24,14 @@ Still looking for friend? Play with us!
  - Site tour.
 
 ## Screenshots of the Game :- 
- - Home Page
+  <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.20.21.jpeg" height="500">
   <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.14.54.jpeg" height="500">
   <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.20.00.jpeg" height="500">
- - Login/SignUp
- - Play with a friend
- - Video Calling a friend
- - Play with the computer
- - Profile Page
+  <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.15.12.jpeg" height="500">
+  <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.15.36.jpeg" height="500">
+  <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.15.53.jpeg" height="500">
+  <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.17.23.jpeg" height="500">
+  
 
 ## External Libraries Used :- 
 
