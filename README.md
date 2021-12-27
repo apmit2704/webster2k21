@@ -35,6 +35,19 @@ Still looking for friend? Play with us!
  - **Model Backend:** Python, MATLAB, Ananconda3, Libraries (Pytorch, Scikit-Image, OpenCV).
 
 ## Steps for running the project :-
+Clone this Repository on your local machine by running the following command on your terminal - 
+```git clone "https://github.com/hackko-20/Virtual-Try-On.git"``` 
+OR download the zip folder.
+
+Create a virtual environment in python<br />
+```virtualenv checkers```<br /><br />
+```checkers\Scripts\activate```<br /><br />
+
+```pip install -r requirement.txt```<br /><br />
+To run server, run the following command:
+```python manage.py runserver```<br /><br />
+
+
  - open one terminal window and run python manage.py runserver for connecting local host
  - open another terminal window and run node server.js for connecting the websocket 
 
