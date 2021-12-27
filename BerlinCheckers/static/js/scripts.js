@@ -27,8 +27,13 @@ socket.onmessage = function(e){
     } else if(data.payload.type === 'endgame'){
         removeAllEventListeners();
         alert("Game has ended.");
+    } else if(data.payload.type === 'state') {
+        redScore = data.payload.redScore;
+        blackScore = data.payload.blackScore;
+        document.getElementById("redscore").innerHTML = `${redScore}`;
+        document.getElementById("blackscore").innerHTML = `${blackScore}`;
     } else {
-        setSelectedPieceForOpp(data.payload.selectedPiece, data.payload.turn, data.payload.number);
+        setSelectedPieceForOpp(data.payload.selectedPiece, data.payload.turn, data.payload.number)
     }
 }
 
@@ -188,6 +193,8 @@ function getSelectedPiece() {
 }
 
 function setSelectedPieceForOpp(selectedPieceOpp, turnOpp, number){
+
+    
     if(turn === turnOpp){
         selectedPiece = selectedPieceOpp;
         turn = turnOpp;

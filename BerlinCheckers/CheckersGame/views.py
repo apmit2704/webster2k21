@@ -202,6 +202,15 @@ def ProfilePage(request):
             profile = []
         game_history = Game.objects.filter(Q(Q(game_creater = request.user.id) | Q(game_opponent = request.user.id)) & Q(is_over = True))
         avail_games = Game.objects.filter(Q(~Q(game_creater = request.user.id) & Q(game_opponent = None)) & Q(is_over = False))
+        avail_list = []
+        # for game in avail_games:
+        #     obj = []
+        #     obj.append(game.room_code)
+        #     game_creator = User.objects.get(id = game.game_creater)
+        #     game_creator_name = Profile.objects.get(user = game_creator)
+        #     obj.append(game_creator_name.name)
+        #     obj.append(game_creator_name.rating)
+        #     avail_list.append(obj)
         #avail_games = Game.objects.
         print(avail_games)
         print(game_history)
@@ -209,7 +218,7 @@ def ProfilePage(request):
             'game_history': game_history,
             'user': user,
             'profile': profile,
-            'avail_list': avail_games
+            'avail_list': avail_list
         }
         return render(request,'CheckersGame/createprofile.html', context)
     else:
