@@ -30,10 +30,10 @@ function createAndSendAnswer () {
     })
 }
 
-let username
+let username = room_code
 function sendUsername() {
 
-    username = document.getElementById("username-input").value
+    // username = document.getElementById("username-input").value
     sendData({
         type: "store_user"
     })

@@ -107,6 +107,12 @@ class GameRoom(WebsocketConsumer):
                 square.square_value = data_received['data']['board'][square.square_no]
                 square.save()
             game.save()
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,{
+                    'type' : 'run_game',
+                    'payload' : text_data
+                }
+            )
             #save board, turn, redscore, blackscore
 
     # sends data back to frontend

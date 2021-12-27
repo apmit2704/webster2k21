@@ -120,10 +120,10 @@
       </div>
       <div class="col-md-6">
         <p class="red-turn-text">
-          Reds turn {{redScore}} {% if player == "game_creator" %} (YOU) {% endif %}
+          Reds turn <p id="redscore">{{redScore}}</p> {% if player == "game_creator" %} (YOU) {% endif %}
         </p>
         <p class="black-turn-text">
-          Blacks turn {{blackScore}} {% if player == "game_opponent" %} (YOU) {% endif %}
+          Blacks turn <p id="blackscore">{{blackScore}}</p> {% if player == "game_opponent" %} (YOU) {% endif %}
         </p>
         <div class="chatbox">
           CHAT:
