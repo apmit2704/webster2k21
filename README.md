@@ -26,6 +26,7 @@ Still looking for friend? Play with us!
 ## Screenshots of the Game :- 
  - Home Page
   <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.14.54.jpeg" height="500">
+  <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.20.00.jpeg" height="500">
  - Login/SignUp
  - Play with a friend
  - Video Calling a friend
