@@ -13,6 +13,7 @@ urlpatterns = [
     path('logout/', logout_view),
     path('index/',views.indexPage,name="index"),
     path('profile/',views.ProfilePage,name="profile"),
+    path('rule/',views.rulePage,name="rule"),
     path('send_friend_request/<int:userID>/',send_request,name='send_friend_request'),
     path('accept_friend_request/<int:requestID>/',accept_request,name='accept_friend_request'),
 ]
