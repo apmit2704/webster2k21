@@ -31,12 +31,13 @@ Still looking for friend? Play with us!
 
 ## Tech Stack
  - **Website Frontend:** HTML, CSS, BootStrap, JavaScript
- - **Website Backend:** Python Django Framework, Paypal API for payment, Web Socket (Django Channels)
- - **Model Backend:** Python, MATLAB, Ananconda3, Libraries (Pytorch, Scikit-Image, OpenCV).
+ - **Website Backend:** Python Django Framework,Web Socket (Django Channels)
+ - **Database:** PostgreSQL
 
 ## Steps for running the project :-
-Clone this Repository on your local machine by running the following command on your terminal - 
-```git clone "https://github.com/hackko-20/Virtual-Try-On.git"``` 
+Clone this Repository on your local machine by running the following command on your terminal -
+
+```git clone https://github.com/khushi-web/webster2k21.git``` 
 OR download the zip folder.
 
 Create a virtual environment in python<br />
