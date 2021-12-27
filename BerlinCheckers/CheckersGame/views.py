@@ -186,6 +186,12 @@ def indexPage(request):
     }
     return render(request,'CheckersGame/index.html',context)
 
+def rulePage(request):
+    context = {
+
+    }
+    return render(request,'CheckersGame/rules.html',context)
+
 
 def ProfilePage(request):
     if request.user.is_authenticated:

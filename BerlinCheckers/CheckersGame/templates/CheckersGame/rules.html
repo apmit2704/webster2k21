@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'css/rules.css' %}"
+/>
+	<title>rules</title>
+</head>
+<body>
+<div class="box">
+	<h1> checkers Rules and gameplay </h1>
+	<p>
+Checkers is played by two players.
+
+Each player begins the game with 12 discs and places them on the 12 dark squares closest to him or her.
+
+Black opens the game, then players alternate their turns.</p>
+<h1>Move</h1>
+<p><h4>The pieces always move diagonally and single pieces are always limited to forward moves.
+
+A piece making a non-capturing move may move only one square.</h4></p>
+<h1>Capture</h1>
+<p><h4>To capture a piece of your opponent, your piece leaps over one of the opponent's pieces and lands in a straight diagonal line on the other side. This landing square must be empty.
+
+When a piece is captured, it is removed from the board.
+
+Only one piece may be captured in a single jump, but multiple jumps are allowed on a single turn.
+
+If a player is able to make the capture, then the jump must be made.
+
+If more than one capture is available, then the player decides if he prefers this or not.
+
+Single pieces may shift direction diagonally during a multiple capture turn, but must always jump forward (toward the opponent).</h4></p>
+<img src="https://lh3.googleusercontent.com/proxy/hZIZzV3X2E46O466BYkuy0fy2CHI4RrgEeJa4ovaOzyq2vhFB3xMpd9yBMrdQXiX2RQqZKdkaCj4BJ85ISq3iHt2s6ypnhE">
+<h1>Upgrade a piece to a King</h1>
+<p><h4>When a piece reaches the furthest row, it is crowned and becomes a king.
+
+One of the pieces which had been captured is placed on top of the king so that it is twice as high as a single piece.
+
+Kings are limited to moving diagonally but can move both forward and backward.
+
+Kings may combine jumps in several directions (forward and backward) on the same turn.</h4></p>
+<h1>End of the Game</h1>
+<p><h4>A player wins the game when the opponent cannot make a move.
+
+This happens usually because all of the opponent's pieces have been captured, but it could also be because all of his pieces are blocked in.</h4></p>
+
+</div>
+</body>
+</html>

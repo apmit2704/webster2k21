@@ -4,6 +4,7 @@
   type="text/css"
   href="{% static 'css/gameboard.css' %}"
 />
+<link rel="stylesheet" href="https://unpkg.com/driver.js/dist/driver.min.css">
 {% endblock %} 
 {% block title%}
 Checkers
@@ -11,7 +12,7 @@ Checkers
 
 {% block content%}
 
-  <div class="row justify-content-center mt-3">
+  <div class="row justify-content-center mt-3" id="board">
     <div class="col align-items-center">
       <table>
         <tr>
@@ -114,7 +115,7 @@ Checkers
 
   </div>
 
-  <div class="row justify-content-center mt-5">
+  <div class="row justify-content-center mt-5" id="brief">
     <section>
      <h1>How to Play Checkers: A step by step Guide</h1>
      Checkers is one of the oldest games we know. The earliest board found dates back to 3,000 BCE, making it around 5,000 years old! The fact that people still play checkers is a testament to just how addictive, enjoyable, and easy the game is to learn and play.
@@ -173,4 +174,8 @@ You can play checkers online to hone your skills! Click here to play checkers on
 
   
 </div>
+<script src="https://unpkg.com/driver.js/dist/driver.min.js">
+    </script>
+    
+   <script src="{% static 'js/site_tour.js' %}"></script>
 {% endblock %}
