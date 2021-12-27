@@ -54,8 +54,11 @@ def create_game(request):
 
 def logout_view(request):
     if request.user.is_authenticated:
+        user = User.objects.get(id = request.user.id)
+        user.status = False
+        user.save()
         logout(request)
-    return HttpResponse("Logged out successfully")
+    return redirect('/')
 
 
 def play(request, room_code):
@@ -192,11 +195,15 @@ def ProfilePage(request):
         except:
             profile = []
         game_history = Game.objects.filter(Q(Q(game_creater = request.user.id) | Q(game_opponent = request.user.id)) & Q(is_over = True))
+        avail_games = Game.objects.filter(Q(~Q(game_creater = request.user.id) & Q(game_opponent = None)) & Q(is_over = False))
+        #avail_games = Game.objects.
+        print(avail_games)
         print(game_history)
         context = {
             'game_history': game_history,
             'user': user,
-            'profile': profile
+            'profile': profile,
+            'avail_list': avail_games
         }
         return render(request,'CheckersGame/createprofile.html', context)
     else:

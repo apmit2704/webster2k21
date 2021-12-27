@@ -32,15 +32,18 @@ Profile
                           <h5>
                             {{ request.user }}
                           </h5>
-                          <p class="status">hello</p>
+                          <p class="status">Hello</p>
                           <p class="proile-rating">RATING : <span>{{ user.profile.rating }}</span></p>
                   <ul class="nav nav-tabs" id="myTab" role="tablist">
                       <li class="nav-item">
                           <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
                       </li>
                       <li class="nav-item">
-                          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">History</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="games-tab" data-toggle="tab" href="#games" role="tab" aria-controls="games" aria-selected="false">Open Games</a>
+                    </li>
                   </ul>
               </div>
           </div>
@@ -161,6 +164,49 @@ Profile
                           </div>
                           {% endif %}
                       </div>
+                    {% endfor %}
+                  </div>
+                  <div class="tab-pane fade" id="games" role="tabpanel" aria-labelledby="games-tab">
+                    <div class="row">
+                      <div class="col-md-4">
+                          <label>Room Code</label>
+                      </div>
+                      <div class="col-md-4">
+                        <label>Game Creator</label>
+                      </div>
+                      <div class="col-md-4">
+                        <label>Rating</label>
+                      </div>
+                    </div>
+                    {% for games_available in avail_list %}
+                    <div class="row">
+                      <div class="col-md-4">
+                          <label id="link">{{ games_available.room_code }}</label>
+                          <span onclick="myFunction()" class="fa fa-copy mr-3" data-toggle="tooltip" data-placement="top" title="Copy Code"></span>
+                          <script>
+                            function myFunction() {
+                              /* Get the text field */
+                              var copyText = document.getElementById("link");
+                            
+                              /* Select the text field 
+                              copyText.select();
+                              copyText.setSelectionRange(0, 99999); 
+                              */
+                              /* Copy the text inside the text field */
+                              navigator.clipboard.writeText(copyText.innerHTML);
+                            
+                              /* Alert the copied text */
+                              alert("Copied the text: " + copyText.innerHTML);
+                            }
+                          </script>
+                      </div>
+                      <div class="col-md-4">
+                        <p>{{ games_available.game_creater }}</p>
+                      </div>
+                      <div class="col-md-4">
+                        <p>{{ games_available.game_creater.rating }}</p>
+                      </div>
+                    </div>
                     {% endfor %}
                   </div>
               </div>
