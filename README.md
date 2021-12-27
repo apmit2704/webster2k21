@@ -28,7 +28,11 @@ Still looking for friend? Play with us!
   <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.15.36.jpeg" height="500">
   <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.15.53.jpeg" height="500">
   <img src="https://github.com/khushi-web/IMgbot/blob/main/WhatsApp%20Image%202021-12-27%20at%2022.17.23.jpeg" height="500">
-  
+
+## Tech Stack
+ - **Website Frontend:** HTML, CSS, BootStrap, JavaScript
+ - **Website Backend:** Python Django Framework, Paypal API for payment, Web Socket (Django Channels)
+ - **Model Backend:** Python, MATLAB, Ananconda3, Libraries (Pytorch, Scikit-Image, OpenCV).
 
 ## Steps for running the project :-
  - open one terminal window and run python manage.py runserver for connecting local host
