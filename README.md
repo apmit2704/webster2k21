@@ -35,6 +35,10 @@ Still looking for friend? Play with us!
  - open another terminal window and run node server.js for connecting the websocket 
 
 
+## Team Members
+ - [Shreya Yadav](https://github.com/hackko-20)
+ - [Khushi Agarwal](https://github.com/khushi-web)
+ - [Aparna Mittal](https://github.com/apmit2704)
 
 NOTE: For video call please use only chrome and incognito mode chrome server for game creator and game opponent or you can use microsoft edge and its private window for the same purpose ##  
 
