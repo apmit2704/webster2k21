@@ -1,414 +1,244 @@
 {% extends 'base.html' %} {% load static %} {% block head %}
 <script defer src="{% static 'js/scripts.js' %}"></script>
 <script src="{% static 'js/vc.js' %}"></script>
-<link href="{% static 'css/vc_style.css' %}" rel="stylesheet">
-<link href="{% static 'css/play_style.css' %}" rel="stylesheet">
 
-{% endblock %} 
+<link href="{% static 'css/play_style.css' %}" rel="stylesheet" />
+<link href="{% static 'css/vc_style.css' %}" rel="stylesheet" />
 
-{% block title%}
-Play
-{% endblock %}
-{% block content%}
-<div id='loadingMenu' style="visibility: hidden; color: black;">
-    Waiting for opponent...<br>
-    Room Code : {{ room_code }}<br>
+
+{% endblock %} {% block title%} Play {% endblock %} {% block content%}
+<div id="loadingMenu" style="visibility: hidden; color: black">
+  Waiting for opponent...<br />
+  Room Code : 
+<span id="link" style="background-color:#D3D3D3;">{{ room_code }}</span>
+<span></span>
+<!-- The button used to copy the text -->
+<span onclick="myFunction()" class="fa fa-copy mr-3" data-toggle="tooltip" data-placement="top" title="Copy Code"></span>
 </div>
 <div id="main">
-    <div class="container emp-profile">
-        <div class="row">
-            <div class="col-md-3">
-                <button class="btn btn-secondary" onclick="gameDraw()">End game</button>
-            </div>
-            <div class="col-md-3">
-                <button class="btn btn-secondary" id="start">
-                    Start Recording
-                </button>
-            </div>
-            <div class="col-md-3">
-                <button class="btn btn-secondary" id="stop" disabled>
-                    Stop Recording
-                </button>
-            </div>
-            <div class="col-md-3">
-                {% if player == "game_creator" %}
-                <input placeholder="Enter room code..."
-                        type="text"
-                        id="username-input" />
-                <button onclick="sendUsername()">Send</button> 
-                <button class="btn btn-secondary" onclick="startCall()">Start Call</button>
-                {% endif %}  
-                {% if player == "game_opponent" %}
-                <input placeholder="Enter room code..."
-                        type="text"
-                        id="username-input1"/> 
-                <button class="btn btn-secondary" onclick="joinCall()">Join Call</button>
-                {% endif %}
-            </div>
-        </div>
+  <div id="video-call-div">
+    <video muted id="local-video" autoplay></video>
+    <video id="remote-video" autoplay></video>
+    <div class="call-action-div">
+      <button onclick="muteVideo()">Mute Video</button>
+      <button onclick="muteAudio()">Mute Audio</button>
     </div>
-    <div id="video-call-div">
-        <video muted id="local-video" autoplay></video>
-        <video id="remote-video" autoplay></video>
-        <div class="call-action-div">
-            <button onclick="muteVideo()">Mute Video</button>
-            <button onclick="muteAudio()">Mute Audio</button>
-        </div>
+  </div>
+  <div class="container emp-profile">
+    <div class="row">
+      <div class="col-md-3">
+        <button class="btn btn-secondary" onclick="gameDraw()">End game</button>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-secondary" id="start">Start Recording</button>
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-secondary" id="stop" disabled>
+          Stop Recording
+        </button>
+      </div>
+      <div class="col-md-3">
+        {% if player == "game_creator" %}
+        <input
+          placeholder="Enter room code..."
+          type="text"
+          id="username-input"
+        />
+        <button onclick="sendUsername()">Send</button>
+        <button class="btn btn-secondary" onclick="startCall()">
+          Start Call
+        </button>
+        {% endif %} {% if player == "game_opponent" %}
+        <input
+          placeholder="Enter room code..."
+          type="text"
+          id="username-input1"
+        />
+        <button class="btn btn-secondary" onclick="joinCall()">
+          Join Call
+        </button>
+        {% endif %}
+      </div>
     </div>
+  </div>
+ 
 
-    <div class="container emp-profile">
-        <div class="row">
-            <div class="col-md-6 gameBoard">
-                <table>
-                    {% for square in board %}
-                        {% if square.square_no|divisibleby:8 %}
-                        <tr>
-                        {% endif %}
-                        {% if square.square_value is None %}
-                        {% if square.square_no < 8 and square.square_no|divisibleby:2 %}
-                        <td class="noPieceHere"></td>
-                        {% elif square.square_no < 8 and square.square_no|add:1|divisibleby:2 %}
-                        <td></td>
-                        {% elif square.square_no < 16 and square.square_no|add:1|divisibleby:2 %}
-                        <td class="noPieceHere"></td>
-                        {% elif square.square_no < 16 and square.square_no|divisibleby:2 %}
-                        <td></td>
-                        {% elif square.square_no < 24 and square.square_no|divisibleby:2 %}
-                        <td class="noPieceHere"></td>
-                        {% elif square.square_no < 24 and square.square_no|add:1|divisibleby:2 %}
-                        <td></td>
-                        {% elif square.square_no < 32 and square.square_no|add:1|divisibleby:2 %}
-                        <td class="noPieceHere"></td>
-                        {% elif square.square_no < 32 and square.square_no|divisibleby:2 %}
-                        <td></td>
-                        {% elif square.square_no < 40 and square.square_no|divisibleby:2 %}
-                        <td class="noPieceHere"></td>
-                        {% elif square.square_no < 40 and square.square_no|add:1|divisibleby:2 %}
-                        <td></td>
-                        {% elif square.square_no < 48 and square.square_no|add:1|divisibleby:2 %}
-                        <td class="noPieceHere"></td>
-                        {% elif square.square_no < 48 and square.square_no|divisibleby:2 %}
-                        <td></td>
-                        {% elif square.square_no < 56 and square.square_no|divisibleby:2 %}
-                        <td class="noPieceHere"></td>
-                        {% elif square.square_no < 56 and square.square_no|add:1|divisibleby:2 %}
-                        <td></td>
-                        {% elif square.square_no < 64 and square.square_no|add:1|divisibleby:2 %}
-                        <td class="noPieceHere"></td>
-                        {% elif square.square_no < 64 and square.square_no|divisibleby:2 %}
-                        <td></td>
-                        {% else %}
-                        <td></td>
-                        {% endif %}
-                        {% elif square.square_value < 12 %}
-                        <td><p class="red-piece" id="{{ square.square_value }}"></p></td>
-                        {% else %}
-                        <td><span class="black-piece" id="{{ square.square_value }}"></span></td>
-                        {% endif %}
-                        {% if square.square_no|add:1|divisibleby:8 %}
-                        </tr>
-                        {% endif %}
-                    {% endfor %}
+  <div class="container emp-profile">
+    <div class="row">
+      <div class="col-md-6 gameBoard">
+        <table>
+                        {% for square in board %}
+                            {% if square.square_no|divisibleby:8 %}
+                            <tr>
+                            {% endif %}
+                            {% if square.square_value is None %}
+                            {% if square.square_no < 8 and square.square_no|divisibleby:2 %}
+                            <td class="noPieceHere"></td>
+                            {% elif square.square_no < 8 and square.square_no|add:1|divisibleby:2 %}
+                            <td></td>
+                            {% elif square.square_no < 16 and square.square_no|add:1|divisibleby:2 %}
+                            <td class="noPieceHere"></td>
+                            {% elif square.square_no < 16 and square.square_no|divisibleby:2 %}
+                            <td></td>
+                            {% elif square.square_no < 24 and square.square_no|divisibleby:2 %}
+                            <td class="noPieceHere"></td>
+                            {% elif square.square_no < 24 and square.square_no|add:1|divisibleby:2 %}
+                            <td></td>
+                            {% elif square.square_no < 32 and square.square_no|add:1|divisibleby:2 %}
+                            <td class="noPieceHere"></td>
+                            {% elif square.square_no < 32 and square.square_no|divisibleby:2 %}
+                            <td></td>
+                            {% elif square.square_no < 40 and square.square_no|divisibleby:2 %}
+                            <td class="noPieceHere"></td>
+                            {% elif square.square_no < 40 and square.square_no|add:1|divisibleby:2 %}
+                            <td></td>
+                            {% elif square.square_no < 48 and square.square_no|add:1|divisibleby:2 %}
+                            <td class="noPieceHere"></td>
+                            {% elif square.square_no < 48 and square.square_no|divisibleby:2 %}
+                            <td></td>
+                            {% elif square.square_no < 56 and square.square_no|divisibleby:2 %}
+                            <td class="noPieceHere"></td>
+                            {% elif square.square_no < 56 and square.square_no|add:1|divisibleby:2 %}
+                            <td></td>
+                            {% elif square.square_no < 64 and square.square_no|add:1|divisibleby:2 %}
+                            <td class="noPieceHere"></td>
+                            {% elif square.square_no < 64 and square.square_no|divisibleby:2 %}
+                            <td></td>
+                            {% else %}
+                            <td></td>
+                            {% endif %}
+                            {% elif square.square_value < 12 %}
+                            <td><p class="red-piece" id="{{ square.square_value }}"></p></td>
+                            {% else %}
+                            <td><span class="black-piece" id="{{ square.square_value }}"></span></td>
+                            {% endif %}
+                            {% if square.square_no|add:1|divisibleby:8 %}
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
                 </table>
-            </div>
-            <div class="col-md-6">
-                <p class="red-turn-text">
-                    Reds turn {{redScore}}
-                    {% if player == "game_creator" %}
-                        (YOU)
-                    {% endif %}
-                </p>
-                <p class="black-turn-text">
-                    Blacks turn {{blackScore}}
-                    {% if player == "game_opponent" %}
-                        (YOU)
-                    {% endif %}
-                </p>
-                <div class="chatbox">
-                    CHAT:
-                    
-                    <div id=box></div>
-                    <div><input id=input placeholder="message" /></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% comment %} 
-    <div id="options" class="options" style="visibility: hidden;">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <button class="btn btn-secondary" onclick="gameDraw()">End game</button>
-                  </li>
-                  <li class="nav-item">
-                    <button class="btn btn-secondary" id="start">
-                        Start Recording
-                    </button>
-                  </li>
+      </div>
+      <div class="col-md-6">
+        <p class="red-turn-text">
+          Reds turn {{redScore}} {% if player == "game_creator" %} (YOU) {% endif %}
+        </p>
+        <p class="black-turn-text">
+          Blacks turn {{blackScore}} {% if player == "game_opponent" %} (YOU) {% endif %}
+        </p>
+        <div class="chatbox">
+          CHAT:
 
-                  <li class="nav-item">
-                    <button class="btn btn-secondary" id="stop" disabled>
-                        Stop Recording
-                    </button>
-                  </li>
-                  <li class="nav-item">
-                    {% if player == "game_creator" %}
-                    <input placeholder="Enter room code..."
-                            type="text"
-                            id="username-input" />
-                    <button onclick="sendUsername()">Send</button> 
-                    <button class="btn btn-secondary" onclick="startCall()">Start Call</button>
-                    {% endif %}  
-                    {% if player == "game_opponent" %}
-                    <input placeholder="Enter room code..."
-                            type="text"
-                            id="username-input1"/> 
-                    <button class="btn btn-secondary" onclick="joinCall()">Join Call</button>
-                    {% endif %}
-                  </li>
-                </ul>
-              </div>
-            </div>
-        </nav>
-    </div>
-    <div id="video-call-div">
-        <video muted id="local-video" autoplay></video>
-        <video id="remote-video" autoplay></video>
-        <div class="call-action-div">
-            <button onclick="muteVideo()">Mute Video</button>
-            <button onclick="muteAudio()">Mute Audio</button>
+          <div id="box"></div>
+          <div><input id="input" placeholder="message" /></div>
         </div>
+      </div>
     </div>
-    <main id='main' style="visibility: visible;">
-        <!--video-call-div resides-->
-        <div class="wrapper" style="display: flex; flex-direction: row;">
-            <div class="row gameBoard" style="width: 100%;">
-                <div class="col">
-                   
-                    <!-- <table>
-                        <tr>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="0"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="1"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="2"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="3"></p></td>
-                        </tr>
-                        <tr>
-                            <td><p class="red-piece" id="4"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="5"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="6"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="7"></p></td>
-                            <td class="noPieceHere"></td>
-                        </tr>
-                        <tr>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="8"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="9"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="10"></p></td>
-                            <td class="noPieceHere"></td>
-                            <td><p class="red-piece" id="11"></p></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="noPieceHere"></td>
-                            <td></td>
-                            <td class="noPieceHere"></td>
-                            <td></td>
-                            <td class="noPieceHere"></td>
-                            <td></td>
-                            <td class="noPieceHere"></td>
-                        </tr>
-                        <tr>
-                            <td class="noPieceHere"></td>
-                            <td></td>
-                            <td class="noPieceHere"></td>
-                            <td></td>
-                            <td class="noPieceHere"></td>
-                            <td></td>
-                            <td class="noPieceHere"></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td><span class="black-piece" id="12"></span></td>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="13"></span></td>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="14"></span></td>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="15"></span></td>
-                            <td class="noPieceHere"></td>
-                        </tr>
-                        <tr>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="16"></span></td>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="17"></span></td>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="18"></span></td>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="19"></span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="black-piece" id="20"></span></td>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="21"></span></td>
-                            <td class="noPieceHere">
-                            <td><span class="black-piece" id="22"></span></td>
-                            <td class="noPieceHere"></td>
-                            <td><span class="black-piece" id="23"></span></td>
-                            <td class="noPieceHere"></td>
-                        </tr>
-                    </table> -->
-                </div>
-                <div class="col container desktop">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row" style="background-color: #DB162F;">
-                                <div class="col">
-                                    <div class="red-turn-text">
-                                        Reds turn 
-                                        {% if player == "game_creator" %}
-                                            (YOU)
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="black-turn-text">
-                                        Blacks turn
-                                        {% if player == "game_opponent" %}
-                                            (YOU)
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="row" style="background-color: #DBDFAC;">
-                                    <div class="col" style="color: #383961;">
-                                    {{ redScore }}
-                                    </div>
-                                    <div class="col" style="color: #383961;">
-                                    {{ blackScore }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="chatbox">
-                                            CHAT:<br>
-                                            <div><input id=input placeholder="message" /></div>
-                                            <div id=box></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-                        </div>
-                    </div>
-                </div>
-            </div> 
-        </div>
-    </main> 
-{% endcomment %}
+  </div>
+</div>
 
 {% if turn %}
 <script>
-    let turn = true;
+  let turn = true;
 </script>
 {% else %}
 <script>
-    let turn = false;
+  let turn = false;
 </script>
-{% endif %} 
+{% endif %}
 <script>
-    const room_code = '{{ room_code }}';
-    const player = '{{ player }}';
-    let redScore = {{ redScore|safe }};
-    let blackScore = {{ blackScore|safe }};
-    const game_squares = {{ game_squares|safe }};
+  const room_code = '{{ room_code }}';
+  const player = '{{ player }}';
+  let redScore = {{ redScore|safe }};
+  let blackScore = {{ blackScore|safe }};
+  const game_squares = {{ game_squares|safe }};
 </script>
 <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.28.2.min.js"></script>
-<video  id="screen-video" width="320" height="240" autoplay />
+<video id="screen-video" width="320" height="240" autoplay />
 <script>
-const start = document.getElementById("start");
-const stop = document.getElementById("stop");
-const video = document.getElementById("screen-video");
-let recorder, stream;
+  const start = document.getElementById("start");
+  const stop = document.getElementById("stop");
+  const video = document.getElementById("screen-video");
+  let recorder, stream;
 
-async function startRecording() {
-  stream = await navigator.mediaDevices.getDisplayMedia({
-    video: { mediaSource: "screen" }
+  async function startRecording() {
+    stream = await navigator.mediaDevices.getDisplayMedia({
+      video: { mediaSource: "screen" },
+    });
+    recorder = new MediaRecorder(stream);
+
+    const chunks = [];
+    recorder.ondataavailable = (e) => chunks.push(e.data);
+    recorder.onstop = (e) => {
+      const completeBlob = new Blob(chunks, { type: chunks[0].type });
+      video.src = URL.createObjectURL(completeBlob);
+    };
+
+    recorder.start();
+  }
+
+  start.addEventListener("click", () => {
+    start.setAttribute("disabled", true);
+    stop.removeAttribute("disabled");
+
+    startRecording();
   });
-  recorder = new MediaRecorder(stream);
 
-  const chunks = [];
-  recorder.ondataavailable = e => chunks.push(e.data);
-  recorder.onstop = e => {
-    const completeBlob = new Blob(chunks, { type: chunks[0].type });
-    video.src = URL.createObjectURL(completeBlob);
-  };
+  stop.addEventListener("click", () => {
+    stop.setAttribute("disabled", true);
+    start.removeAttribute("disabled");
 
-  recorder.start();
-}
+    recorder.stop();
+    stream.getVideoTracks()[0].stop();
+  });
 
-start.addEventListener("click", () => {
-  start.setAttribute("disabled", true);
-  stop.removeAttribute("disabled");
-
-  startRecording();
-});
-
-stop.addEventListener("click", () => {
-  stop.setAttribute("disabled", true);
-  start.removeAttribute("disabled");
-
-  recorder.stop();
-  stream.getVideoTracks()[0].stop();
-});  
-
-
-
-
-
-(function() {
+  (function () {
     var pubnub = new PubNub({
-        publishKey: 'pub-c-41c5ef93-a994-4e54-9307-c866bdb8e3a5',
-        subscribeKey: 'sub-c-32489648-5a95-11ec-96e9-32997ff5e1b9'
+      publishKey: "pub-c-41c5ef93-a994-4e54-9307-c866bdb8e3a5",
+      subscribeKey: "sub-c-32489648-5a95-11ec-96e9-32997ff5e1b9",
     });
     function $(id) {
-        return document.getElementById(id);
+      return document.getElementById(id);
     }
-    var box = $('box'),
-        input = $('input'),
-        channel = '10chat-demo';
+    var box = $("box"),
+      input = $("input"),
+      channel = "10chat-demo";
     pubnub.addListener({
-        message: function(obj) {
-            box.innerHTML =  box.innerHTML + '{{username}}' + ": " + ('' + obj.message).replace(/[<>]/g, '') + '<br>'
-        }
+      message: function (obj) {
+        box.innerHTML =
+          box.innerHTML +
+          ("" + obj.message).replace(/[<>]/g, "") +
+          "<br>";
+      },
     });
     pubnub.subscribe({
-        channels: [channel]
+      channels: [channel],
     });
-    input.addEventListener('keyup', function(e) {
-        if ((e.keyCode || e.charCode) === 13) {
-            pubnub.publish({
-                channel: channel,
-                message: input.value,
-                x: (input.value = '')
-            });
-        }
+    input.addEventListener("keyup", function (e) {
+      if ((e.keyCode || e.charCode) === 13) {
+        pubnub.publish({
+          channel: channel,
+          message: "{{ username }}: " + input.value,
+          x: (input.value = ""),
+        });
+      }
     });
-})();
+  })();
 
+
+  function myFunction() {
+    /* Get the text field */
+    var copyText = document.getElementById("link");
+  
+    /* Select the text field 
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); 
+    */
+     /* Copy the text inside the text field */
+    navigator.clipboard.writeText(copyText.innerHTML);
+  
+    /* Alert the copied text */
+    alert("Copied the text: " + copyText.innerHTML);
+  }
 </script>
 
 {% endblock %}

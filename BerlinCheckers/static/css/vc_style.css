@@ -22,8 +22,8 @@
 #remote-video {
     background: #000000;
     position: absolute;
-    top: 70%;
-    left: 70%;
+    top: 0;
+    right: 0;
     margin: 16px;
     border-radius: 16px;
     max-width: 20%;
@@ -33,7 +33,7 @@
 .call-action-div {
     position: absolute;
     left: 45%;
-    bottom: 32px;
+    top: 0;
 }
 
 button {

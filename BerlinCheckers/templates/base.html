@@ -1,64 +1,4 @@
 {% load static %}
-{% comment %} <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	
-  <title id="title">Checkers</title>
-  
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.jss" ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" ></script>
-    
-  <link rel="stylesheet" href="https://unpkg.com/driver.js/dist/driver.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  {% block css %} 
-  {% endblock %}
-	
-</head>
-  <body>
-   
-    <div class="container-fluid h-100">
-        <div class="row h-100">
-            <div class="col-2" style="padding: 0;">
-                <div class="wrapper d-flex">
-                <div class="sidebar"> <small class="text-muted pl-3">Checkers</small>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-home"></i>Home</a></li>
-                        <li><a href="#"><i class="far fa-credit-card"></i>Play </a></li>
-                        <li><a href="{% url 'profile' %}"><i class="fas fa-file-invoice"></i>Profile </a></li>
-                        <li><a href="#"><i class="far fa-calendar-alt"></i>Learn</a></li>
-                        <li><a href="#"><i class="fas fa-video"></i>Connect</a></li>
-                        <li><a href="#"><i class="fas fa-id-badge"></i>Settings</a></li>
-                    </ul> 
-                    {% if not user.is_authenticated %}
-                    <ul>
-                    <li><button type="button" class="btn btn-outline-dark btn-lg">Sign Up</button></li>
-                    <li><button type="button" class="btn btn-outline-success btn-lg">Log In</button></li>
-                    <ul>
-                    {% else %}
-                    <ul>
-                      <li><a href="#"><i class="fas fa-id-badge"></i>Logout</a></li>
-                    <ul>
-                    {% endif %}
-                   
-                   
-       
-                </div>
-            </div>
-        </div>
-        <div class="col-10">
-            {% block content %}
-            {% endblock %}
-        </div>
-    </div>
-</div>
- 
-  
-  </body>
-</html> {% endcomment %}
 
 <!doctype html>
 <html lang="en">
@@ -93,27 +33,46 @@
 		  		<h1><a href="index.html" class="logo">Checkers <span id="intro">Play Checkers</span></a></h1>
 	        <ul class="list-unstyled components mb-5">
 	          <li class="active">
-	            <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
+	            <a href=""><span class="fa fa-home mr-3"></span> Home</a>
 	          </li>
 	          <li>
+
 	              <a href="{% url 'rule' %}"><span class="fa fa-user mr-3" id="play"></span> How To Play</a>
 	          </li>
+
+            {% if user.is_authenticated %}
 	          <li>
-              <a href="#"><span class="fa fa-briefcase mr-3"></span> Play</a>
+              <a href="{% url 'create_game' %}"><span class="fa fa-play mr-3"></span> Play with a friend</a>
 	          </li>
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+            <li>
+              <a href="{% url 'login'%}"><span class="fa fa-play mr-3"></span> Play with a friend</a>
+	          </li>
+
+            {% endif %}
+
+            <li>
+              <a href="/playbot"><span class="fa fa-play mr-3"></span> Play with computer</a>
+
+	          </li>
+
+            {% if user.is_authenticated %}
 	          <li>
-              <a href="#"><span class="fa fa-sticky-note mr-3"></span> Connect</a>
+
+              <a href="{% url 'profile' %}"><span class="fa fa-user mr-3" id="profile"></span> Profile</a>
+
 	          </li>
-	          
-	          <li>
-              <a href="#"><span class="fa fa-cogs mr-3" id="settings"></span> Settings</a>
+            {% endif %}
+            {% if not user.is_authenticated %}
+            <li>
+              <a href="{% url 'login' %}"><span class="fa fa-user mr-3"></span> Profile</a>
 	          </li>
-	          <li>
-              <a href="{% url 'profile' %}"><span class="fa fa-paper-plane mr-3" id="profile"></span> Profile</a>
-	          </li>
+            {% endif %}
             {% if user.is_authenticated %}
             <li>
-              <a href="/logout/"><span class="fa fa-cogs mr-3"></span>Logout</a>
+              <a href="/logout/"><span class="fa fa-sign-out mr-3"></span>Logout</a>
             </li>
             {% endif %}
 	        </ul>
@@ -144,8 +103,9 @@
     </script>
     <script src="{% static 'js/site_tour.js' %}"></script>
     <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/popper.js' %}"></script>
+    
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
   </body>
 </html>

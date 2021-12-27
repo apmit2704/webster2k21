@@ -44,7 +44,14 @@ def loginPage(request):
 
 			if user is not None:
 				login(request, user)
-				return redirect('home')
+
+				return redirect('profile')
+
+				obj = User.objects.get(username = username)
+				obj.status = True
+				obj.save()
+				return redirect('profile')
+
 			else:
 				messages.info(request, 'Username OR password is incorrect')
 

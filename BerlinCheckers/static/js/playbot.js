@@ -449,4 +449,15 @@ function changePlayer() {
     givePiecesEventListeners();
 }
 
+function gameDraw()
+{
+    var data = {
+        'type' : 'endgame',
+        'result' : 'D'
+    }
+    socket.send(JSON.stringify({
+        data
+    }));
+}
+
 givePiecesEventListeners();
