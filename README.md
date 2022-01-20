@@ -6,6 +6,8 @@ An online paltform to play checkers with friends.
 
 Still looking for friend? Play with us!
 
+YouTube Project Demo - https://www.youtube.com/watch?v=OpI5JsyPWQ4&ab_channel=shreyayadav
+
 ## Salient Features :- 
  - Login/SignUp
  - Propose Draw/Accept Draw option: 
